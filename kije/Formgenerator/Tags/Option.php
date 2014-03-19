@@ -6,7 +6,7 @@
  * Time: 9:19 PM
  */
 
-namespace kije\Formulargenerator\Tags;
+namespace kije\Formgenerator\Tags;
 require_once 'HTMLTag.php';
 
 class Option extends HTMLTag {

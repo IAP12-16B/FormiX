@@ -6,7 +6,7 @@
  * Time: 10:06 PM
  */
 
-namespace kije\Formulargenerator\Tests;
+namespace kije\Formgenerator\Tests;
 
 
 class InputFieldTest extends \PHPUnit_Framework_TestCase {

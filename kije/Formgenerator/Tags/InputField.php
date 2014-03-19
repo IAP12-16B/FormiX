@@ -6,7 +6,7 @@
  * Time: 8:03 PM
  */
 
-namespace kije\Formulargenerator\Tags;
+namespace kije\Formgenerator\Tags;
 require_once 'HTMLTag.php';
 
 

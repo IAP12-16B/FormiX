@@ -1,15 +1,15 @@
 <?php
-namespace kije\Formulargenerator;
-use kije\Formulargenerator\inc\DB;
-use kije\Formulargenerator\Tags\Form;
+namespace kije\Formgenerator;
+use kije\Formgenerator\inc\DB;
+use kije\Formgenerator\Tags\Form;
 
 require_once 'inc/globals.inc.php';
 require_once 'Tags/Form.php';
 
-class FormulargeneratorException extends \Exception {}
+class FormgeneratorException extends \Exception {}
 
 
-class Formulargenerator {
+class Formgenerator {
     private $_table;
     protected $_form;
 
@@ -21,7 +21,7 @@ class Formulargenerator {
     );
 
     /**
-     * @var Formulargenerator instance
+     * @var Formgenerator instance
      */
     private static $_instance;
 
@@ -41,13 +41,13 @@ class Formulargenerator {
     /**
      * @param $table
      * @param array $options
-     * @throws FormulargeneratorException
+     * @throws FormgeneratorException
      */
     public static function init($table, $options = array()) {
         if (empty(self::$_instance)) {
-            self::$_instance = new Formulargenerator($table, $options);
+            self::$_instance = new Formgenerator($table, $options);
         } else {
-            throw new FormulargeneratorException('Already initialized!');
+            throw new FormgeneratorException('Already initialized!');
         }
     }
 

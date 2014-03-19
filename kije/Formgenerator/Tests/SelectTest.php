@@ -6,7 +6,7 @@
  * Time: 10:07 PM
  */
 
-namespace kije\Formulargenerator\Tests;
+namespace kije\Formgenerator\Tests;
 
 
 class SelectTest extends \PHPUnit_Framework_TestCase {

@@ -6,7 +6,7 @@
  * Time: 9:45 PM
  */
 
-namespace kije\Formulargenerator\Tags;
+namespace kije\Formgenerator\Tags;
 require_once 'HTMLTag.php';
 
 class Form extends HTMLTag {
@@ -65,7 +65,7 @@ class Form extends HTMLTag {
     }
 
     /**
-     * @param \kije\Formulargenerator\Tags\HTMLTag $element
+     * @param \kije\Formgenerator\Tags\HTMLTag $element
      * @param int|string $key
      */
     public function addElement(HTMLTag $element, $key = null) {

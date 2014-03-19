@@ -8,7 +8,7 @@
 
 /** Idea: create class Attribute, which is simply a class with a key and value, and it can validate itself  */
 
-namespace kije\Formulargenerator\Tags;
+namespace kije\Formgenerator\Tags;
 require_once '../inc/globals.inc.php';
 
 class HTMLTagException extends \Exception {}

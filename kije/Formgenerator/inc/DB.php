@@ -1,5 +1,5 @@
 <?php
-namespace kije\Formulargenerator\inc;
+namespace kije\Formgenerator\inc;
 
 class DB {
     const MYSQL_DATE = 'Y-m-d';

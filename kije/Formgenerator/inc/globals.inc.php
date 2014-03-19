@@ -1,5 +1,5 @@
 <?php
-namespace kije\Formulargenerator\inc;
+namespace kije\Formgenerator\inc;
 
 require_once 'db.config.php';
 require_once 'DB.php';

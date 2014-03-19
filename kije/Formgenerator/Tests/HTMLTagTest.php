@@ -6,7 +6,7 @@
  * Time: 10:04 PM
  */
 
-namespace kije\Formulargenerator\Tests;
+namespace kije\Formgenerator\Tests;
 
 
 class HTMLTagTest extends PHPUnit_Framework_TestCase {

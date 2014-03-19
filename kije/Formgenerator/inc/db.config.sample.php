@@ -1,5 +1,5 @@
 <?php
-namespace kije\Formulargenerator\inc;
+namespace kije\Formgenerator\inc;
 
 define('DB_HOST', 'localhost');
 define('DB_DATABASE', 'Formulargenerator');
