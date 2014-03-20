@@ -7,106 +7,107 @@
  */
 
 namespace kije\Formgenerator\Tags;
+
 require_once 'HTMLTag.php';
 
-class Select extends HTMLTag {
-    protected $_tagname = 'select';
-    protected $_selfclosing = false;
-    protected $_required_attributes = array('name');
-    protected $_allowed_attributes = array(
-        // global attributes
-        'accesskey',
-        'class',
-        'contenteditable',
-        'contextmenu',
-        'dir',
-        'draggable',
-        'dropzone',
-        'hidden',
-        'id',
-        'itemid',
-        'itemprop',
-        'itemref',
-        'itemscope',
-        'itemtype',
-        'lang',
-        'spellcheck',
-        'style',
-        'tabindex',
-        'title',
-        'autofocus',
-        'disabled',
-        'form',
-        'multiple',
-        'name',
-        'required',
-        'size'
-    );
+class Select extends HTMLTag
+{
+	protected $_tagname = 'select';
+	protected $_selfclosing = false;
+	protected $_required_attributes = array('name');
+	protected $_allowed_attributes = array(
+		// global attributes
+		'accesskey',
+		'class',
+		'contenteditable',
+		'contextmenu',
+		'dir',
+		'draggable',
+		'dropzone',
+		'hidden',
+		'id',
+		'itemid',
+		'itemprop',
+		'itemref',
+		'itemscope',
+		'itemtype',
+		'lang',
+		'spellcheck',
+		'style',
+		'tabindex',
+		'title',
+		'autofocus',
+		'disabled',
+		'form',
+		'multiple',
+		'name',
+		'required',
+		'size'
+	);
 
-    private $_options = array();
+	private $_options = array();
 
-    /**
-     * @param array $attrs
-     * @param array $options
-     */
-    public function __construct(array $attrs = array(), array $options = array()) {
-        $this->setAttributes($attrs);
-        $this->addOptions($options);
-    }
+	/**
+	 * @param array $attrs
+	 * @param array $options
+	 */
+	public function __construct(array $attrs = array(), array $options = array()) {
+		$this->setAttributes($attrs);
+		$this->addOptions($options);
+	}
 
-    /**
-     * @return array
-     */
-    public function getOptions()
-    {
-        return $this->_options;
-    }
+	/**
+	 * @param array $options
+	 */
+	public function addOptions(array $options) {
+		foreach ($options as $option) {
+			$this->addOption($option);
+		}
+	}
 
+	/**
+	 * @param Option     $option
+	 * @param int|string $key
+	 */
+	public function addOption(Option $option, $key = NULL) {
+		if ($key != NULL) {
+			$this->_options[$key] = $option;
+		} else {
+			$this->_options[] = $option;
+		}
+	}
 
-    /**
-     * @param Option $option
-     * @param int|string $key
-     */
-    public function addOption(Option $option, $key = null) {
-        if ($key != null) {
-            $this->_options[$key] = $option;
-        } else {
-            $this->_options[] = $option;
-        }
-    }
+	/**
+	 * @param $key
+	 */
+	public function removeOption($key) {
+		unset($this->_options[$key]);
+	}
 
-    /**
-     * @param array $options
-     */
-    public function addOptions(array $options) {
-        foreach($options as $option) {
-            $this->addOption($option);
-        }
-    }
+	/**
+	 * @return string
+	 */
+	public function toHTML() {
+		$this->updateInnerHTML();
 
-    /**
-     * @param $key
-     */
-    public function removeOption($key) {
-        unset($this->_options[$key]);
-    }
+		return parent::toHTML();
+	}
 
-    /**
-     *
-     */
-    protected function updateInnerHTML() {
-        $this->_innerHTML = '';
+	/**
+	 *
+	 */
+	protected function updateInnerHTML() {
+		$this->_innerHTML = '';
 
-        foreach($this->getOptions() as $key => $option) {
-            $this->_innerHTML .= $option->toHTML();
-        }
-    }
+		foreach ($this->getOptions() as $key => $option) {
+			$this->_innerHTML .= $option->toHTML();
+		}
+	}
 
-    /**
-     * @return string
-     */
-    public function toHTML() {
-        $this->updateInnerHTML();
-        return parent::toHTML();
-    }
+	/**
+	 * @return array
+	 */
+	public function getOptions() {
+		return $this->_options;
+	}
 } 

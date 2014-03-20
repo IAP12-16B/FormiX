@@ -7,109 +7,111 @@
  */
 
 namespace kije\Formgenerator\Tags;
+
 require_once 'HTMLTag.php';
 
-class Form extends HTMLTag {
-    protected $_tagname = 'form';
-    protected $_selfclosing = false;
-    protected $_required_attributes = array();
-    protected $_allowed_attributes = array(
-        // global attributes
-        'accesskey',
-        'class',
-        'contenteditable',
-        'contextmenu',
-        'dir',
-        'draggable',
-        'dropzone',
-        'hidden',
-        'id',
-        'itemid',
-        'itemprop',
-        'itemref',
-        'itemscope',
-        'itemtype',
-        'lang',
-        'spellcheck',
-        'style',
-        'tabindex',
-        'title',
-        'accept',
-        'accept-charset',
-        'action',
-        'autocomplete',
-        'enctype',
-        'method',
-        'name',
-        'novalidate',
-        'target'
-    );
+class Form extends HTMLTag
+{
+	protected $_tagname = 'form';
+	protected $_selfclosing = false;
+	protected $_required_attributes = array();
+	protected $_allowed_attributes = array(
+		// global attributes
+		'accesskey',
+		'class',
+		'contenteditable',
+		'contextmenu',
+		'dir',
+		'draggable',
+		'dropzone',
+		'hidden',
+		'id',
+		'itemid',
+		'itemprop',
+		'itemref',
+		'itemscope',
+		'itemtype',
+		'lang',
+		'spellcheck',
+		'style',
+		'tabindex',
+		'title',
+		'accept',
+		'accept-charset',
+		'action',
+		'autocomplete',
+		'enctype',
+		'method',
+		'name',
+		'novalidate',
+		'target'
+	);
 
-    private $_elements = array();
+	private $_elements = array();
 
-    /**
-     * @param $attrs
-     * @param array $elements
-     */
-    public function __construct(array $attrs = array(), array $elements = array()) {
-        $this->setAttributes($attrs);
-        $this->addElements($elements);
-    }
+	/**
+	 * @param       $attrs
+	 * @param array $elements
+	 */
+	public function __construct(array $attrs = array(), array $elements = array()) {
+		$this->setAttributes($attrs);
+		$this->addElements($elements);
+	}
 
-    /**
-     * @return array
-     */
-    public function getElements()
-    {
-        return $this->_elements;
-    }
+	/**
+	 * @param array $elements
+	 */
+	public function addElements(array $elements) {
+		foreach ($elements as $element) {
+			$this->addElement($element);
+		}
+	}
 
-    /**
-     * @param \kije\Formgenerator\Tags\HTMLTag $element
-     * @param int|string $key
-     */
-    public function addElement(HTMLTag $element, $key = null) {
-        if ($key != null) {
-            $this->_elements[$key] = $element;
-        } else {
-            $this->_elements[] = $element;
-        }
-    }
+	/**
+	 * @param \kije\Formgenerator\Tags\HTMLTag $element
+	 * @param int|string                       $key
+	 */
+	public function addElement(HTMLTag $element, $key = NULL) {
+		if ($key != NULL) {
+			$this->_elements[$key] = $element;
+		} else {
+			$this->_elements[] = $element;
+		}
+	}
 
-    /**
-     * @param array $elements
-     */
-    public function addElements(array $elements) {
-        foreach($elements as $element) {
-            $this->addElement($element);
-        }
-    }
+	/**
+	 * @param $key
+	 */
+	public function removeOption($key) {
+		unset($this->_elements[$key]);
+	}
 
-    /**
-     * @param $key
-     */
-    public function removeOption($key) {
-        unset($this->_elements[$key]);
-    }
+	/**
+	 * @return string
+	 */
+	public function toHTML() {
+		$this->updateInnerHTML();
 
-    /**
-     *
-     */
-    protected function updateInnerHTML() {
-        $this->_innerHTML = '';
+		return parent::toHTML();
+	}
 
-        foreach($this->getElements() as $key => $element) {
-            $this->_innerHTML .= $element->toHTML();
-        }
-    }
+	/**
+	 *
+	 */
+	protected function updateInnerHTML() {
+		$this->_innerHTML = '';
 
-    /**
-     * @return string
-     */
-    public function toHTML() {
-        $this->updateInnerHTML();
-        return parent::toHTML();
-    }
+		foreach ($this->getElements() as $key => $element) {
+			$this->_innerHTML .= $element->toHTML();
+		}
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getElements() {
+		return $this->_elements;
+	}
 
 
 } 

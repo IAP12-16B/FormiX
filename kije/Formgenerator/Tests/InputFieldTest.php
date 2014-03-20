@@ -9,7 +9,12 @@
 namespace kije\Formgenerator\Tests;
 
 
-class InputFieldTest extends \PHPUnit_Framework_TestCase {
+use PHPUnit_Framework_TestCase;
 
+class InputFieldTest extends PHPUnit_Framework_TestCase
+{
+
+	public function test() {
+	}
 }
  

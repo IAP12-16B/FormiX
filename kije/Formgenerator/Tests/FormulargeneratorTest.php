@@ -9,7 +9,8 @@
 namespace kije\Formgenerator\Tests;
 
 
-class FormulargeneratorTest extends \PHPUnit_Framework_TestCase {
+class FormulargeneratorTest extends \PHPUnit_Framework_TestCase
+{
 
 }
  
