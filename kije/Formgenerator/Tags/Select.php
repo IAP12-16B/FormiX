@@ -15,35 +15,6 @@ class Select extends HTMLTag
 	protected $_tagname = 'select';
 	protected $_selfclosing = false;
 	protected $_required_attributes = array('name');
-	protected $_allowed_attributes = array(
-		// global attributes
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'itemid',
-		'itemprop',
-		'itemref',
-		'itemscope',
-		'itemtype',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'autofocus',
-		'disabled',
-		'form',
-		'multiple',
-		'name',
-		'required',
-		'size'
-	);
 
 	private $_options = array();
 
@@ -75,6 +46,23 @@ class Select extends HTMLTag
 		} else {
 			$this->_options[] = $option;
 		}
+	}
+
+	public function getAllowedAttributes() {
+		return array_unique(
+			array_merge(
+				parent::getAllowedAttributes(),
+				array(
+					'autofocus',
+					'disabled',
+					'form',
+					'multiple',
+					'name',
+					'required',
+					'size'
+				)
+			)
+		);
 	}
 
 	/**

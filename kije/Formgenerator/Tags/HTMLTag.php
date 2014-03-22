@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kije
- * Date: 3/19/14
- * Time: 7:46 PM
- */
+
 
 /** Idea: create class Attribute, which is simply a class with a key and value, and it can validate itself  */
 
@@ -22,29 +17,6 @@ abstract class HTMLTag
 	protected $_selfclosing;
 	protected $_required_attributes = array();
 
-	// TODO: rewite this to a function
-	protected $_allowed_attributes = array(
-		// global attributes
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'itemid',
-		'itemprop',
-		'itemref',
-		'itemscope',
-		'itemtype',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title'
-	);
 	protected $_attrs = array();
 	protected $_innerHTML = '';
 
@@ -93,7 +65,32 @@ abstract class HTMLTag
 	 * @return bool
 	 */
 	public function isAttributeAllowed($key) {
-		return in_array($key, $this->_allowed_attributes);
+		return in_array($key, $this->getAllowedAttributes());
+	}
+
+	public function getAllowedAttributes() {
+		return array(
+			// global attributes
+			'accesskey',
+			'class',
+			'contenteditable',
+			'contextmenu',
+			'dir',
+			'draggable',
+			'dropzone',
+			'hidden',
+			'id',
+			'itemid',
+			'itemprop',
+			'itemref',
+			'itemscope',
+			'itemtype',
+			'lang',
+			'spellcheck',
+			'style',
+			'tabindex',
+			'title'
+		);
 	}
 
 	/**
@@ -112,13 +109,6 @@ abstract class HTMLTag
 	 */
 	public function getRequiredAttributes() {
 		return $this->_required_attributes;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getAllowedAttributes() {
-		return $this->_allowed_attributes;
 	}
 
 	/**

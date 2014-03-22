@@ -15,37 +15,6 @@ class Form extends HTMLTag
 	protected $_tagname = 'form';
 	protected $_selfclosing = false;
 	protected $_required_attributes = array();
-	protected $_allowed_attributes = array(
-		// global attributes
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'itemid',
-		'itemprop',
-		'itemref',
-		'itemscope',
-		'itemtype',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'accept',
-		'accept-charset',
-		'action',
-		'autocomplete',
-		'enctype',
-		'method',
-		'name',
-		'novalidate',
-		'target'
-	);
 
 	private $_elements = array();
 
@@ -79,6 +48,25 @@ class Form extends HTMLTag
 		}
 	}
 
+	public function getAllowedAttributes() {
+		return array_unique(
+			array_merge(
+				parent::getAllowedAttributes(),
+				array(
+					'accept',
+					'accept-charset',
+					'action',
+					'autocomplete',
+					'enctype',
+					'method',
+					'name',
+					'novalidate',
+					'target'
+				)
+			)
+		);
+	}
+
 	/**
 	 * @param $key
 	 */
@@ -102,6 +90,7 @@ class Form extends HTMLTag
 		$this->_innerHTML = '';
 
 		foreach ($this->getElements() as $key => $element) {
+			/** @noinspection PhpUndefinedMethodInspection */
 			$this->_innerHTML .= $element->toHTML();
 		}
 	}

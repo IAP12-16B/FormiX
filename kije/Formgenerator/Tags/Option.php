@@ -15,32 +15,6 @@ class Option extends HTMLTag
 	protected $_tagname = 'option';
 	protected $_selfclosing = false;
 	protected $_required_attributes = array();
-	protected $_allowed_attributes = array(
-		// global attributes
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'itemid',
-		'itemprop',
-		'itemref',
-		'itemscope',
-		'itemtype',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'disabled',
-		'label',
-		'selected',
-		'value'
-	);
 
 	/**
 	 * @param $attrs
@@ -51,6 +25,20 @@ class Option extends HTMLTag
 	public function __construct(array $attrs = array(), $text = '') {
 		$this->setAttributes($attrs);
 		$this->_innerHTML = $text;
+	}
+
+	public function getAllowedAttributes() {
+		return array_unique(
+			array_merge(
+				parent::getAllowedAttributes(),
+				array(
+					'disabled',
+					'label',
+					'selected',
+					'value'
+				)
+			)
+		);
 	}
 
 	/**

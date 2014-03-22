@@ -16,43 +16,6 @@ class Textarea extends HTMLTag
 	protected $_tagname = 'textarea';
 	protected $_selfclosing = false;
 	protected $_required_attributes = array('name');
-	protected $_allowed_attributes = array(
-		// global attributes
-		'accesskey',
-		'class',
-		'contenteditable',
-		'contextmenu',
-		'dir',
-		'draggable',
-		'dropzone',
-		'hidden',
-		'id',
-		'itemid',
-		'itemprop',
-		'itemref',
-		'itemscope',
-		'itemtype',
-		'lang',
-		'spellcheck',
-		'style',
-		'tabindex',
-		'title',
-		'autofocus',
-		'cols',
-		'disabled',
-		'form',
-		'maxlength',
-		'name',
-		'placeholder',
-		'readonly',
-		'required',
-		'rows',
-		'selectionDirection',
-		'selectionEnd',
-		'selectionStart',
-		'spellcheck',
-		'wrap'
-	);
 
 	/**
 	 * @param $attrs
@@ -62,6 +25,32 @@ class Textarea extends HTMLTag
 		$this->setAttributes($attrs);
 		$this->_innerHTML = $value;
 	}
+
+	public function getAllowedAttributes() {
+		return array_unique(
+			array_merge(
+				parent::getAllowedAttributes(),
+				array(
+					'autofocus',
+					'cols',
+					'disabled',
+					'form',
+					'maxlength',
+					'name',
+					'placeholder',
+					'readonly',
+					'required',
+					'rows',
+					'selectionDirection',
+					'selectionEnd',
+					'selectionStart',
+					'spellcheck',
+					'wrap'
+				)
+			)
+		);
+	}
+
 
 	/**
 	 * @param $value
