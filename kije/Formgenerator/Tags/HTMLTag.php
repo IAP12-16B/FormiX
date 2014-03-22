@@ -1,6 +1,4 @@
 <?php
-
-
 /** Idea: create class Attribute, which is simply a class with a key and value, and it can validate itself  */
 
 namespace kije\Formgenerator\Tags;

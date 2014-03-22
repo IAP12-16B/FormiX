@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kije
- * Date: 3/19/14
- * Time: 9:28 PM
- */
 
 namespace kije\Formgenerator\Tags;
 

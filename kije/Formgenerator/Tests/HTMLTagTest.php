@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: kije
- * Date: 3/20/14
- * Time: 9:27 PM
- */
 
 namespace kije\Formgenerator\Tests;
 
