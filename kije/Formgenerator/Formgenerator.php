@@ -1,12 +1,24 @@
 <?php
 namespace kije\Formgenerator;
 
-use kije\Formgenerator\inc\DB;
-use kije\Formgenerator\Tags\Form;
-
 require_once 'inc/globals.inc.php';
-require_once 'Tags/Form.php';
+require_once FORMGEN_ROOT . '/Tags/Form.php';
+require_once FORMGEN_ROOT . '/Tags/Textarea.php';
+require_once FORMGEN_ROOT . '/Tags/InputField.php';
+require_once FORMGEN_ROOT . '/Tags/Select.php';
+require_once FORMGEN_ROOT . '/Tags/Option.php';
+require_once FORMGEN_ROOT . '/Tags/Button.php';
 
+use kije\Formgenerator\inc\DB;
+use kije\Formgenerator\Tags\Button;
+use kije\Formgenerator\Tags\Form;
+use kije\Formgenerator\Tags\InputField;
+use kije\Formgenerator\Tags\Option;
+use kije\Formgenerator\Tags\Select;
+use kije\Formgenerator\Tags\Textarea;
+
+
+// TODO: Different exceptions
 class FormgeneratorException extends \Exception
 {
 }
