@@ -32,8 +32,13 @@ class Formgenerator
 	private static $_instance;
 	protected $_form;
 	private $_table;
+
+	/**
+	 * @var array options
+	 */
 	private $_options = array(
-		'form_attrs' => array(
+		'input_name_prefix' => 'form',
+		'form_attrs'        => array(
 			'action' => '',
 			'method' => 'post'
 		)
@@ -47,9 +52,21 @@ class Formgenerator
 		$this->_table = $table;
 		$this->_options = array_merge_recursive($this->_options, $options);
 
-		$this->_form = new Form($this->_options['form_attrs']);
 
-		$this->loadTable();
+	}
+
+	/**
+	 * @return mixed
+	 * @throws FormgeneratorException
+	 */
+	public static function getForm() {
+		if (!empty(self::$_instance)) {
+			self::$_instance->loadTable();
+
+			return self::$_instance->_form;
+		} else {
+			throw new FormgeneratorException('Not initialized!');
+		}
 	}
 
 	/**
@@ -62,13 +79,151 @@ class Formgenerator
 		$res = $stmt->fetchAll();
 
 		if (!empty($res)) {
-			$this->_fields = array();
+			$this->_form = new Form($this->_options['form_attrs']);
 
 			foreach ($res as $column) {
 				$type = $this->getType($column['Field'], $column['Type']);
 				if ($type != NULL) {
+					$formfield = NULL;
+					switch ($type) {
+						case 'textarea':
+							$formfield = new Textarea();
+							$formfield->setAttribute('name', $column['Field']);
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+							$this->_form->addElement($formfield);
+							break;
+
+						case 'password':
+						case 'text':
+						case 'date':
+						case 'time':
+						case 'datetime':
+						case 'number':
+							$formfield = new InputField();
+							$formfield->setAttribute('type', $type);
+							$formfield->setAttribute(
+								'name',
+								$this->_options['input_name_prefix'] . '[' . $column['Field'] . ']'
+							);
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+							$this->_form->addElement($formfield);
+							break;
+
+						case 'floatnumber':
+							$formfield = new InputField();
+							$formfield->setAttribute('type', 'number');
+							$formfield->setAttribute('step', 'any');
+							$formfield->setAttribute(
+								'name',
+								$this->_options['input_name_prefix'] . '[' . $column['Field'] . ']'
+							);
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+							$this->_form->addElement($formfield);
+							break;
+
+
+						case 'checkbox':
+							$formfield = new InputField();
+							$formfield->setAttribute('type', 'checkbox');
+							$formfield->setAttribute(
+								'name',
+								$this->_options['input_name_prefix'] . '[' . $column['Field'] . ']'
+							);
+							$formfield->setAttribute('value', '1');
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+							$this->_form->addElement($formfield);
+							break;
+
+						case 'multicheckbox':
+							$values = array_filter(preg_split('/enum\(|\"|\'|[\s,]+|\)/i', $column['Type']));
+
+							foreach ($values as $value) {
+								$formfield = new InputField();
+								$formfield->setAttribute('type', 'checkbox');
+								$formfield->setAttribute(
+									'name',
+									$this->_options['input_name_prefix'] .
+									'[' .
+									$column['Field'] .
+									']'
+								);
+								$formfield->setAttribute('value', $value);
+								$this->_form->addElement($formfield);
+							}
+							break;
+
+						case 'radio':
+							$values = array_filter(preg_split('/enum\(|\"|\'|[\s,]+|\)/i', $column['Type']));
+
+							foreach ($values as $value) {
+								$formfield = new InputField();
+								$formfield->setAttribute('type', 'radio');
+								$formfield->setAttribute(
+									'name',
+									$this->_options['input_name_prefix'] .
+									'[' .
+									$column['Field'] .
+									']'
+								);
+								$formfield->setAttribute('value', $value);
+								if ($column['Null'] == 'NO') {
+									$formfield->setAttribute('required', 'required');
+								}
+								$this->_form->addElement($formfield);
+							}
+							break;
+
+						case 'select':
+							$values = array_filter(preg_split('/enum\(|\"|\'|[\s,]+|\)/i', $column['Type']));
+							$formfield = new Select();
+							$formfield->setAttribute(
+								'name',
+								$this->_options['input_name_prefix'] . '[' . $column['Field'] . ']'
+							);
+
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+
+							foreach ($values as $value) {
+								$option = new Option();
+								$option->setAttribute('value', $value);
+								$option->setText($value);
+								$formfield->addOption($option);
+							}
+							$this->_form->addElement($formfield);
+							break;
+
+
+						default:
+							$formfield = new InputField();
+							$formfield->setAttribute('type', 'text');
+							$formfield->setAttribute(
+								'name',
+								$this->_options['input_name_prefix'] . '[' . $column['Field'] . ']'
+							);
+							if ($column['Null'] == 'NO') {
+								$formfield->setAttribute('required', 'required');
+							}
+							$this->_form->addElement($formfield);
+							break;
+					}
+
 				}
 			}
+
+			$formfield = new Button();
+			$formfield->setAttribute('type', 'submit');
+			$formfield->setText('Senden');
+			$this->_form->addElement($formfield);
 		}
 	}
 
@@ -88,16 +243,30 @@ class Formgenerator
 					$type = 'text';
 				}
 			}
-		} else {
-			if (strpos($col_name, 'checkbox_') === 0) {
-				if (preg_match_all('/int/i', $col_type)) {
-					$type = 'checkbox';
-				} else {
-					if (strpos(strtolower($col_type), 'enum') !== false) {
-						$type = 'multicheckbox';
-					}
-				}
+		} elseif (strpos($col_name, 'checkbox_') === 0) {
+			if (preg_match_all('/int/i', $col_type)) {
+				$type = 'checkbox';
+			} else if (strpos(strtolower($col_type), 'enum') !== false) {
+				$type = 'multicheckbox';
+			}
 
+		} elseif (strpos($col_name, 'radio_') === 0 && strpos(strtolower($col_type), 'enum') !== false) {
+			$type = 'radio';
+		} elseif (strpos($col_name, 'select_') === 0 && strpos(strtolower($col_type), 'enum') !== false) {
+			$type = 'select';
+		} elseif (strpos($col_name, 'password_') === 0) {
+			$type = 'password';
+		} elseif (strpos($col_name, 'date_') === 0) {
+			$type = 'date';
+		} elseif (strpos($col_name, 'time_') === 0) {
+			$type = 'time';
+		} elseif (strpos($col_name, 'datetime_') === 0) {
+			$type = 'datetime';
+		} elseif (strpos($col_name, 'number_') === 0) {
+			if (preg_match_all('/int/i', $col_type)) {
+				$type = 'number';
+			} elseif (preg_match_all('/double|float|real/i', $col_type)) {
+				$type = 'floatnumber';
 			}
 		}
 
