@@ -8,5 +8,5 @@ define('FORMGEN_INC_ROOT', __DIR__);
 define('FORMGEN_ROOT', realpath(FORMGEN_INC_ROOT . '/..'));
 
 
-require_once FORMGEN_INC_ROOT.'/db.config.php';
-require_once FORMGEN_INC_ROOT.'/DB.php';
+require_once FORMGEN_INC_ROOT . '/db.config.php';
+require_once FORMGEN_INC_ROOT . '/DB.php';

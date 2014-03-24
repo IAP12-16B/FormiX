@@ -1,34 +1,49 @@
 <?php
 namespace kije\Formgenerator\inc;
 
+
+/**
+ * Class DB
+ * @package kije\Formgenerator\inc
+ */
 class DB
 {
-	const MYSQL_DATE = 'Y-m-d';
-	const MYSQL_DATETIME = 'Y-m-d H:i:s';
+    const MYSQL_DATE = 'Y-m-d';
+    const MYSQL_DATETIME = 'Y-m-d H:i:s';
 
-	protected static $_dbh;
+    protected static $instance;
 
-	public static function dbh() {
-		if (!self::$_dbh) {
-			// connect to database
-			try {
-				self::$_dbh = new \PDO(
-					'mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE,
-					DB_USER,
-					DB_PASSWORD,
-					array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
-				);
-				self::$_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-			} catch (\PDOException $e) {
-				return NULL;
-			}
-		}
+    /**
+     * Returns a configured PDO instance
+     * @return null|\PDO
+     */
+    public static function dbh()
+    {
+        if (!self::$instance) {
+            // connect to database
+            try {
+                self::$instance = new \PDO(
+                    'mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE,
+                    DB_USER,
+                    DB_PASSWORD,
+                    array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
+                );
+                self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+            } catch (\PDOException $e) {
+                return null;
+            }
+        }
 
-		return self::$_dbh;
-	}
+        return self::$instance;
+    }
 
-	public static function unix2datetime($timestamp) {
-		return date(self::MYSQL_DATETIME, $timestamp);
-	}
-
+    /**
+     * @param $timestamp
+     *
+     * @return bool|string
+     */
+    public static function unix2datetime($timestamp)
+    {
+        return date(self::MYSQL_DATETIME, $timestamp);
+    }
 }

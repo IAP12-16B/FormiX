@@ -4,97 +4,114 @@ namespace kije\Formgenerator\Tags;
 
 require_once 'HTMLTag.php';
 
+/**
+ * Class Form
+ * @package kije\Formgenerator\Tags
+ */
+
+/**
+ * Class Form
+ * @package kije\Formgenerator\Tags
+ */
 class Form extends HTMLTag
 {
-	protected $_tagname = 'form';
-	protected $_selfclosing = false;
-	protected $_required_attributes = array();
+    protected $tagname = 'form';
+    protected $selfclosing = false;
+    protected $required_attributes = array();
 
-	private $_elements = array();
+    private $elements = array();
 
-	/**
-	 * @param       $attrs
-	 * @param array $elements
-	 */
-	public function __construct(array $attrs = array(), array $elements = array()) {
-		$this->setAttributes($attrs);
-		$this->addElements($elements);
-	}
+    /**
+     * @param       $attrs
+     * @param array $elements
+     */
+    public function __construct(array $attrs = array(), array $elements = array())
+    {
+        $this->setAttributes($attrs);
+        $this->addElements($elements);
+    }
 
-	/**
-	 * @param array $elements
-	 */
-	public function addElements(array $elements) {
-		foreach ($elements as $element) {
-			$this->addElement($element);
-		}
-	}
+    /**
+     * @param array $elements
+     */
+    public function addElements(array $elements)
+    {
+        foreach ($elements as $element) {
+            $this->addElement($element);
+        }
+    }
 
-	/**
-	 * @param \kije\Formgenerator\Tags\HTMLTag $element
-	 * @param int|string                       $key
-	 */
-	public function addElement(HTMLTag $element, $key = NULL) {
-		if ($key != NULL) {
-			$this->_elements[$key] = $element;
-		} else {
-			$this->_elements[] = $element;
-		}
-	}
+    /**
+     * @param \kije\Formgenerator\Tags\HTMLTag $element
+     * @param int|string                       $key
+     */
+    public function addElement(HTMLTag $element, $key = null)
+    {
+        if ($key != null) {
+            $this->elements[$key] = $element;
+        } else {
+            $this->elements[] = $element;
+        }
+    }
 
-	public function getAllowedAttributes() {
-		return array_unique(
-			array_merge(
-				parent::getAllowedAttributes(),
-				array(
-					'accept',
-					'accept-charset',
-					'action',
-					'autocomplete',
-					'enctype',
-					'method',
-					'name',
-					'novalidate',
-					'target'
-				)
-			)
-		);
-	}
+    /**
+     * @return array
+     */
+    public function getAllowedAttributes()
+    {
+        return array_unique(
+            array_merge(
+                parent::getAllowedAttributes(),
+                array(
+                    'accept',
+                    'accept-charset',
+                    'action',
+                    'autocomplete',
+                    'enctype',
+                    'method',
+                    'name',
+                    'novalidate',
+                    'target'
+                )
+            )
+        );
+    }
 
-	/**
-	 * @param $key
-	 */
-	public function removeOption($key) {
-		unset($this->_elements[$key]);
-	}
+    /**
+     * @param $key
+     */
+    public function removeOption($key)
+    {
+        unset($this->elements[$key]);
+    }
 
-	/**
-	 * @return string
-	 */
-	public function toHTML() {
-		$this->updateInnerHTML();
+    /**
+     * @return string
+     */
+    public function toHTML()
+    {
+        $this->updateInnerHTML();
 
-		return parent::toHTML();
-	}
+        return parent::toHTML();
+    }
 
-	/**
-	 *
-	 */
-	protected function updateInnerHTML() {
-		$this->_innerHTML = '';
+    /**
+     *
+     */
+    protected function updateInnerHTML()
+    {
+        $this->innerHTML = '';
 
-		foreach ($this->getElements() as $key => $element) {
-			/** @noinspection PhpUndefinedMethodInspection */
-			$this->_innerHTML .= $element->toHTML();
-		}
-	}
+        foreach ($this->getElements() as $element) {
+            $this->innerHTML .= $element->toHTML();
+        }
+    }
 
-	/**
-	 * @return array
-	 */
-	public function getElements() {
-		return $this->_elements;
-	}
-
-
-} 
+    /**
+     * @return array
+     */
+    public function getElements()
+    {
+        return $this->elements;
+    }
+}

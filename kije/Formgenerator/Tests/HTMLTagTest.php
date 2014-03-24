@@ -1,26 +1,34 @@
 <?php
-
 namespace kije\Formgenerator\Tests;
 
-require_once '../Tags/HTMLTag.php';
+require_once realpath(__DIR__.'/../Tags/HTMLTag.php');
 
 use kije\Formgenerator\Tags\HTMLTag;
 use PHPUnit_Framework_TestCase;
 
+/**
+ * Class TestTag
+ * @package kije\Formgenerator\Tests
+ */
 class TestTag extends HTMLTag
 {
 }
 
+/**
+ * Class HTMLTagTest
+ * @package kije\Formgenerator\Tests
+ */
 class HTMLTagTest extends PHPUnit_Framework_TestCase
 {
-	private $_instance;
+    private $instance;
 
-	public function setUp() {
-		$this->_instance = new TestTag();
-	}
+    public function setUp()
+    {
+        $this->instance = new TestTag();
+    }
 
-	public function testGetRequiredAttributes() {
-		$this->fail('Not yet implemented');
-	}
+    public function testGetRequiredAttributes()
+    {
+        $this->fail('Not yet implemented');
+    }
 }
- 
