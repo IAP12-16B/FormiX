@@ -7,12 +7,11 @@ namespace kije\HTMLTags;
  * Class InputField
  * @package kije\HTMLTags
  */
-class InputField extends HTMLTag
+class InputField extends Formfield
 {
     protected $tagname = 'input';
     protected $selfclosing = true;
     protected $requiredAttributes = array('name', 'type');
-
 
     /**
      * @return array

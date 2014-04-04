@@ -15,7 +15,7 @@ class Password extends InputField
      * @param string $value
      * @param        $attributes
      */
-    public function __construct($name, $required, $placeholder = '', $value = '', array $attributes = array())
+    public function __construct($name, $required = false, $placeholder = '', $value = '', array $attributes = array())
     {
         $attrs = array(
             'name'        => $name,

@@ -3,7 +3,6 @@
 
 namespace kije\HTMLTags;
 
-require_once realpath(__DIR__ . '/../') . '/Formgenerator/inc/globals.inc.php';
 
 /**
  * Class HTMLTagException
@@ -215,6 +214,7 @@ abstract class HTMLTag
      */
     public function toHTML()
     {
+        $this->updateInnerHTML();
         // check if all required attributes are set
         if (count(($diffs = array_diff($this->requiredAttributes, array_keys($this->attrs)))) !== 0) {
             throw new HTMLTagException('Required attributes [' . implode(', ', $diffs) . '] not set!');
@@ -235,4 +235,7 @@ abstract class HTMLTag
         return $html;
     }
 
+    protected function updateInnerHTML()
+    {
+    }
 }

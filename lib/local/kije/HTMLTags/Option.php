@@ -8,7 +8,7 @@ namespace kije\HTMLTags;
  * Class Option
  * @package kije\HTMLTags
  */
-class Option extends HTMLTag
+class Option extends Formfield
 {
     protected $tagname = 'option';
     protected $selfclosing = false;

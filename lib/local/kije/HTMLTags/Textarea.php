@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class Textarea
  * @package kije\HTMLTags
  */
-class Textarea extends HTMLTag
+class Textarea extends Formfield
 {
     protected $tagname = 'textarea';
     protected $selfclosing = false;
@@ -23,7 +23,7 @@ class Textarea extends HTMLTag
      */
     public function __construct(
         $name,
-        $required,
+        $required = false,
         $placeholder = '',
         $value = '',
         $maxlength = null,

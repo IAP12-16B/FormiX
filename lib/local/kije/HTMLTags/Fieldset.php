@@ -4,9 +4,7 @@
 namespace kije\HTMLTags;
 
 
-use kije\Formgenerator\Formfield;
-
-class Fieldset extends HTMLTag
+class Fieldset extends Formfield
 {
     protected $tagname = 'fieldset';
     protected $selfclosing = false;
@@ -36,9 +34,8 @@ class Fieldset extends HTMLTag
     }
 
     /**
-     * @param \kije\Formgenerator\Formfield $field
-     * @param int|string                    $key
-     *
+     * @param Formfield  $field
+     * @param int|string $key
      */
     public function addField(Formfield $field, $key = null)
     {
@@ -50,13 +47,11 @@ class Fieldset extends HTMLTag
     }
 
     /**
-     * @return string
+     * @param $key
      */
-    public function toHTML()
+    public function removeField($key)
     {
-        $this->updateInnerHTML(); // TODO: put this in HTMLTag so you dont have to include this in every child class
-
-        return parent::toHTML();
+        unset($this->fields[$key]);
     }
 
     /**
@@ -67,20 +62,15 @@ class Fieldset extends HTMLTag
         $this->innerHTML = '';
 
         foreach ($this->getFields() as $field) {
-            $this->innerHTML .= sprintf('<label>%s %s</label>', $field->getTag()->toHTML(), $field->getCaption());
+            $this->innerHTML .= sprintf('<label>%s %s</label>', $field->toHTML(), $field->getCaption());
         }
     }
 
+    /**
+     * @return Formfield[]
+     */
     public function getFields()
     {
         return $this->fields;
-    }
-
-    /**
-     * @param $key
-     */
-    public function removeOption($key)
-    {
-        unset($this->fields[$key]);
     }
 }

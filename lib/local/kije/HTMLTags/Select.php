@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class Select
  * @package kije\HTMLTags
  */
-class Select extends HTMLTag
+class Select extends Formfield
 {
     protected $tagname = 'select';
     protected $selfclosing = false;
@@ -22,8 +22,13 @@ class Select extends HTMLTag
      * @param array    $attributes
      *
      */
-    public function __construct($name, $required = false, array $options = array(), array $attributes = array()) // TODO: selected
-    {
+    public function __construct(
+        $name,
+        $required = false,
+        array $options = array(),
+        array $attributes = array()
+    )
+    {// TODO: selected
         $attrs = array(
             'name' => $name,
         );
@@ -87,16 +92,6 @@ class Select extends HTMLTag
     public function removeOption($key)
     {
         unset($this->options[$key]);
-    }
-
-    /**
-     * @return string
-     */
-    public function toHTML()
-    {
-        $this->updateInnerHTML();
-
-        return parent::toHTML();
     }
 
     /**

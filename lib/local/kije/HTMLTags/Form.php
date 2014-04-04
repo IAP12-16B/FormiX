@@ -85,15 +85,6 @@ class Form extends HTMLTag
         unset($this->elements[$key]);
     }
 
-    /**
-     * @return string
-     */
-    public function toHTML()
-    {
-        $this->updateInnerHTML();
-
-        return parent::toHTML();
-    }
 
     /**
      *

@@ -8,16 +8,16 @@ namespace kije\HTMLTags;
 class Textfield extends InputField
 {
     /**
-     * @param array  $name
-     * @param        $required
-     * @param string $placeholder
-     * @param string $value
-     * @param        $maxlength
-     * @param array  $attributes
+     * @param array    $name
+     * @param boolean  $required
+     * @param string   $placeholder
+     * @param string   $value
+     * @param int|null $maxlength
+     * @param array    $attributes
      */
     public function __construct(
         $name,
-        $required,
+        $required = false,
         $placeholder = '',
         $value = '',
         $maxlength = null,

@@ -7,21 +7,32 @@ namespace kije\HTMLTags;
  * Class Button
  * @package kije\HTMLTags
  */
-class Button extends HTMLTag
+class Button extends Formfield
 {
-
     protected $tagname = 'button';
     protected $selfclosing = false;
     protected $requiredAttributes = array();
 
-
     /**
-     *
-     *
-     * public function __construct()
-     * {
-     * parent::__contruct();
-     * }*/
+     * @param null|string $name
+     * @param string|null $value
+     * @param string      $type
+     * @param array       $attributes
+     */
+    public function __construct($text, $name = null, $value = null, $type = 'submit', array $attributes = array())
+    {
+        $attrs = array(
+            'name'  => $name,
+            'type'  => $type,
+            'value' => $value,
+        );
+
+        $attrs = array_merge($attributes, $attrs);
+        parent::__construct($attrs);
+
+        $this->setText($text);
+    }
+
 
     /**
      * @return array
