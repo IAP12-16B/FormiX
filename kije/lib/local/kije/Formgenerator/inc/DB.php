@@ -3,7 +3,7 @@ namespace kije\Formgenerator\inc;
 
 
 /**
- * Class DB
+ * Database (PDO) Helper Class
  * @package kije\Formgenerator\inc
  */
 class DB
@@ -20,16 +20,20 @@ class DB
     public static function dbh()
     {
         if (!self::$instance) {
-            // connect to database
             try {
+                // Initialize PDO intstance.
                 self::$instance = new \PDO(
                     'mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE,
                     DB_USER,
                     DB_PASSWORD,
                     array(\PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8")
                 );
+
+                // set error mode
                 self::$instance->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             } catch (\PDOException $e) {
+                // Log error
+                error_log('Could not connect to database: Error: ' . $e->getCode() . PHP_EOL . $e->getMessage(), 0);
                 return null;
             }
         }
@@ -38,12 +42,26 @@ class DB
     }
 
     /**
-     * @param $timestamp
+     * Converts a timestamp to MySQL datetime format
+     *
+     * @param $timestamp int
      *
      * @return bool|string
      */
     public static function unix2datetime($timestamp)
     {
         return date(self::MYSQL_DATETIME, $timestamp);
+    }
+
+    /**
+     * Converts a timestamp to MySQL date format
+     *
+     * @param $timestamp int
+     *
+     * @return bool|string
+     */
+    public static function unix2date($timestamp)
+    {
+        return date(self::MYSQL_DATE, $timestamp);
     }
 }

@@ -1,29 +1,39 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
-
-require_once 'HTMLTag.php';
+namespace kije\HTMLTags;
 
 
 /**
  * Class Select
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class Select extends HTMLTag
 {
     protected $tagname = 'select';
     protected $selfclosing = false;
-    protected $required_attributes = array('name');
+    protected $requiredAttributes = array('name');
 
-    private $_options = array();
+    private $options = array();
 
     /**
-     * @param array $attrs
-     * @param array $options
+     * @param array    $name
+     * @param bool     $required
+     * @param Option[] $options
+     * @param array    $attributes
+     *
      */
-    public function __construct(array $attrs = array(), array $options = array())
+    public function __construct($name, $required = false, array $options = array(), array $attributes = array()) // TODO: selected
     {
-        $this->setAttributes($attrs);
+        $attrs = array(
+            'name' => $name,
+        );
+
+        if ($required) {
+            $attrs['required'] = 'required';
+        }
+
+        $attrs = array_merge($attributes, $attrs);
+        parent::__construct($attrs);
         $this->addOptions($options);
     }
 
@@ -44,9 +54,9 @@ class Select extends HTMLTag
     public function addOption(Option $option, $key = null)
     {
         if ($key != null) {
-            $this->_options[$key] = $option;
+            $this->options[$key] = $option;
         } else {
-            $this->_options[] = $option;
+            $this->options[] = $option;
         }
     }
 
@@ -76,7 +86,7 @@ class Select extends HTMLTag
      */
     public function removeOption($key)
     {
-        unset($this->_options[$key]);
+        unset($this->options[$key]);
     }
 
     /**
@@ -102,10 +112,10 @@ class Select extends HTMLTag
     }
 
     /**
-     * @return array
+     * @return Option[]
      */
     public function getOptions()
     {
-        return $this->_options;
+        return $this->options;
     }
 }

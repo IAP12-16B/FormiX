@@ -1,18 +1,17 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
+namespace kije\HTMLTags;
 
-require_once 'HTMLTag.php';
 
 /**
  * Class InputField
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class InputField extends HTMLTag
 {
     protected $tagname = 'input';
     protected $selfclosing = true;
-    protected $required_attributes = array('name', 'type');
+    protected $requiredAttributes = array('name', 'type');
 
 
     /**

@@ -1,34 +1,35 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
+namespace kije\HTMLTags;
 
-require_once 'HTMLTag.php';
 
-/**
- * Class Option
- * @package kije\Formgenerator\Tags
- */
 
 /**
  * Class Option
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class Option extends HTMLTag
 {
     protected $tagname = 'option';
     protected $selfclosing = false;
-    protected $required_attributes = array();
+    protected $requiredAttributes = array();
 
     /**
-     * @param $attrs
-     * @param $text
-     *
-     * @internal param $value
+     * @param array $caption
+     * @param null  $value
+     * @param array $attributes
      */
-    public function __construct(array $attrs = array(), $text = '')
+    public function __construct($caption, $value = null, array $attributes = array())
     {
-        $this->setAttributes($attrs);
-        $this->innerHTML = $text;
+        $attrs = array();
+
+        if ($value != null) {
+            $attrs['value'] = $value;
+        }
+
+        $attrs = array_merge($attributes, $attrs);
+        parent::__construct($attrs);
+        $this->innerHTML = $caption;
     }
 
     /**

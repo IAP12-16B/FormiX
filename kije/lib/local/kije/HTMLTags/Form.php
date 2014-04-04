@@ -1,29 +1,29 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
+namespace kije\HTMLTags;
 
 require_once 'HTMLTag.php';
 
 /**
  * Class Form
- * @package kije\Formgenerator\Tags
+ * @package kije\Tags
  */
 
 /**
  * Class Form
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class Form extends HTMLTag
 {
     protected $tagname = 'form';
     protected $selfclosing = false;
-    protected $required_attributes = array();
+    protected $requiredAttributes = array();
 
     private $elements = array();
 
     /**
-     * @param       $attrs
-     * @param array $elements
+     * @param           $attrs
+     * @param HTMLTag[] $elements
      */
     public function __construct(array $attrs = array(), array $elements = array())
     {
@@ -42,7 +42,7 @@ class Form extends HTMLTag
     }
 
     /**
-     * @param \kije\Formgenerator\Tags\HTMLTag $element
+     * @param \kije\HTMLTags\HTMLTag $element
      * @param int|string                       $key
      */
     public function addElement(HTMLTag $element, $key = null)
@@ -108,7 +108,7 @@ class Form extends HTMLTag
     }
 
     /**
-     * @return array
+     * @return HTMLTag[]
      */
     public function getElements()
     {

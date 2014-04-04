@@ -1,33 +1,27 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
+namespace kije\HTMLTags;
 
-require_once 'HTMLTag.php';
-
-/**
- * Class Button
- * @package kije\Formgenerator\Tags
- */
 
 /**
  * Class Button
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class Button extends HTMLTag
 {
 
     protected $tagname = 'button';
     protected $selfclosing = false;
-    protected $required_attributes = array();
+    protected $requiredAttributes = array();
 
 
     /**
      *
-     */
-    public function __construct()
-    {
-
-    }
+     *
+     * public function __construct()
+     * {
+     * parent::__contruct();
+     * }*/
 
     /**
      * @return array

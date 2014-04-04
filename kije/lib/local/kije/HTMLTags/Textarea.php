@@ -1,26 +1,44 @@
 <?php
 
-namespace kije\Formgenerator\Tags;
-
-require_once 'HTMLTag.php';
+namespace kije\HTMLTags;
 
 
 /**
  * Class Textarea
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class Textarea extends HTMLTag
 {
     protected $tagname = 'textarea';
     protected $selfclosing = false;
-    protected $required_attributes = array('name');
+    protected $requiredAttributes = array('name');
 
     /**
-     * @param $attrs
-     * @param $value
+     * @param array  $name
+     * @param        $required
+     * @param string $placeholder
+     * @param string $value
+     * @param null   $maxlength
+     * @param array  $attributes
      */
-    public function __construct(array $attrs = array(), $value = '')
-    {
+    public function __construct(
+        $name,
+        $required,
+        $placeholder = '',
+        $value = '',
+        $maxlength = null,
+        array $attributes = array()
+    ) {
+        $attrs = array(
+            'name'        => $name,
+            'placeholder' => $placeholder,
+            'maxlength'   => $maxlength
+        );
+
+        if ($required) {
+            $attrs['required'] = 'required';
+        }
+        $attrs = array_merge($attributes, $attrs);
         $this->setAttributes($attrs);
         $this->innerHTML = $value;
     }

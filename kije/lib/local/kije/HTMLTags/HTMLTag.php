@@ -1,13 +1,13 @@
 <?php
 /** Idea: create class Attribute, which is simply a class with a key and value, and it can validate itself  */
 
-namespace kije\Formgenerator\Tags;
+namespace kije\HTMLTags;
 
-require_once '../inc/globals.inc.php';
+require_once realpath(__DIR__ . '/../') . '/Formgenerator/inc/globals.inc.php';
 
 /**
  * Class HTMLTagException
- * @package kije\Formgenerator\Tags
+ * @package kije\HTMLTags
  */
 class HTMLTagException extends \Exception
 {
@@ -15,13 +15,13 @@ class HTMLTagException extends \Exception
 
 /**
  * Class HTMLTag
- * @package kije\Formgenerator\Tags
+ * @package kije\Tags
  */
 abstract class HTMLTag
 {
     protected $tagname;
     protected $selfclosing;
-    protected $required_attributes = array();
+    protected $requiredAttributes = array();
 
     protected $attrs = array();
     protected $innerHTML = '';
@@ -120,11 +120,38 @@ abstract class HTMLTag
     }
 
     /**
+     * Get attribute
+     *
+     * @param $attr
+     *
+     * @return mixed
+     */
+    public function get($attr)
+    {
+        $val = null;
+        if (array_key_exists($attr, $this->attrs)) {
+            $val = $this->attrs[$attr];
+        }
+        return $val;
+    }
+
+    /**
+     * Shorthand for setAttribute
+     *
+     * @param $key
+     * @param $value
+     */
+    public function set($key, $value)
+    {
+        $this->setAttribute($key, $value);
+    }
+
+    /**
      * @return array
      */
     public function getRequiredAttributes()
     {
-        return $this->required_attributes;
+        return $this->requiredAttributes;
     }
 
     /**
@@ -189,7 +216,7 @@ abstract class HTMLTag
     public function toHTML()
     {
         // check if all required attributes are set
-        if (count(($diffs = array_diff($this->required_attributes, array_keys($this->attrs)))) !== 0) {
+        if (count(($diffs = array_diff($this->requiredAttributes, array_keys($this->attrs)))) !== 0) {
             throw new HTMLTagException('Required attributes [' . implode(', ', $diffs) . '] not set!');
         }
 
@@ -207,4 +234,5 @@ abstract class HTMLTag
 
         return $html;
     }
+
 }
