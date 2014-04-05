@@ -4,7 +4,7 @@
 namespace kije\HTMLTags;
 
 
-class Time extends InputField
+class Time extends InputField implements Validateable
 {
     /**
      * @param string      $name
@@ -46,4 +46,22 @@ class Time extends InputField
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
     }
-} 
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '/(0?[0-9]|1[0-9]|2[0-3])(:[0-5][0-9]){2}/';
+    }
+}

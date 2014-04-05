@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class InputField
  * @package kije\HTMLTags
  */
-class InputField extends Formfield
+class InputField extends Formfield implements Validateable
 {
     protected $tagname = 'input';
     protected $selfclosing = true;
@@ -108,5 +108,23 @@ class InputField extends Formfield
             'url',
             'week'
         );
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '.*';
     }
 }

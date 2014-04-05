@@ -4,7 +4,7 @@
 namespace kije\HTMLTags;
 
 
-class Radio extends InputField
+class Radio extends InputField implements Validateable
 {
 
     /**
@@ -31,5 +31,23 @@ class Radio extends InputField
         }
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '.*';
     }
 }

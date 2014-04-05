@@ -5,7 +5,7 @@ namespace kije\HTMLTags;
  * Class Textfield
  * @package kije\HTMLTags
  */
-class Textfield extends InputField
+class Textfield extends InputField implements Validateable
 {
     /**
      * @param array    $name
@@ -36,5 +36,30 @@ class Textfield extends InputField
         }
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        $pattern = '.';
+        if ($this->get('maxlength')) {
+            $pattern .= '{,'.$this->get('maxlength').'}';
+        } else {
+            $pattern .= '*';
+        }
+
+        return $pattern;
     }
 }

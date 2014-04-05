@@ -17,6 +17,7 @@ use kije\HTMLTags\Select;
 use kije\HTMLTags\Textarea;
 use kije\HTMLTags\Textfield;
 use kije\HTMLTags\Time;
+use kije\HTMLTags\Validateable;
 
 /**
  * Class FormiX
@@ -57,11 +58,11 @@ class FormiX
         $this->formfields = array();
         foreach ($this->structure as $column) {
             if ($field = $this->column2formfield($column)) {
-                $this->formfields[] = $field;
+                $this->formfields[$column['Field']] = $field;
             }
         }
 
-        $this->formfields[] = new Button('Submit');
+        $this->formfields['submit'] = new Button('Submit');
     }
 
     /**
@@ -72,7 +73,16 @@ class FormiX
         $stmt = DB::dbh()->prepare('SHOW FULL COLUMNS FROM ' . $this->tableName);
         $stmt->execute();
 
-        $this->structure = $stmt->fetchAll();
+        $this->structure = array();
+
+        foreach ($stmt->fetchAll() as $row) {
+            // filter auto_incremented values (may also be a security improvement)
+            if (strpos(strtolower($row['Extra']), 'auto_increment') === false) {
+                $this->structure[$row['Field']] = $row;
+            }
+        }
+
+
     }
 
     /**
@@ -136,8 +146,33 @@ class FormiX
 
         if ($formfield != null) {
             $formfield->setCaption($caption);
+            $formfield->set('id', $name);
         }
 
         return $formfield;
+    }
+
+    /**
+     * @param array $form_request Array with the values of the submitted form
+     *
+     * @return array
+     */
+    public function validate($form_request)
+    {
+        $messages = array();
+        $errors = array();
+
+        $this->buildForm();
+
+        foreach ($form_request as $key => $value) {
+            if (array_key_exists($key, $this->structure)) {
+                $formfield = $this->column2formfield($this->structure[$key]);
+                if ($formfield instanceof Validateable) {
+                    $formfield->validateValue($value);
+                }
+            }
+        }
+
+        return array('messages' => $messages, 'errors' => $errors);
     }
 }

@@ -4,7 +4,7 @@
 namespace kije\HTMLTags;
 
 
-class Checkbox extends InputField
+class Checkbox extends InputField implements Validateable
 {
 
     /**
@@ -16,7 +16,7 @@ class Checkbox extends InputField
     public function __construct($name, $value = '1', $required = false, $attributes = array())
     {
         $attrs = array(
-            'name' => $name,
+            'name'  => $name,
             'type'  => 'checkbox',
             'value' => $value
         );
@@ -26,5 +26,23 @@ class Checkbox extends InputField
         }
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '.*';
     }
 }

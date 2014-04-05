@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class Select
  * @package kije\HTMLTags
  */
-class Select extends Formfield
+class Select extends Formfield implements Validateable
 {
     protected $tagname = 'select';
     protected $selfclosing = false;
@@ -112,5 +112,23 @@ class Select extends Formfield
     public function getOptions()
     {
         return $this->options;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '.*';
     }
 }

@@ -4,7 +4,7 @@
 namespace kije\HTMLTags;
 
 
-class Fieldset extends Formfield
+class Fieldset extends Formfield implements Validateable
 {
     protected $tagname = 'fieldset';
     protected $selfclosing = false;
@@ -72,5 +72,23 @@ class Fieldset extends Formfield
     public function getFields()
     {
         return $this->fields;
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        return '.*';
     }
 }

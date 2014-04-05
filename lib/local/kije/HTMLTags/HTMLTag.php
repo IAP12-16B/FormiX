@@ -1,16 +1,8 @@
 <?php
-/** Idea: create class Attribute, which is simply a class with a key and value, and it can validate itself  */
 
 namespace kije\HTMLTags;
 
-
-/**
- * Class HTMLTagException
- * @package kije\HTMLTags
- */
-class HTMLTagException extends \Exception
-{
-}
+use kije\HTMLTags\Exceptions\HTMLTagException;
 
 /**
  * Class HTMLTag
@@ -197,15 +189,10 @@ abstract class HTMLTag
      * @param $key
      * @param $value
      *
-     * @throws HTMLTagException
      */
     public function setDataAttribute($key, $value)
     {
-        if (strpos($key, 'data-') === 0) {
-            $this->attrs[$key] = $value;
-        } else {
-            throw new HTMLTagException('Data-Attribute (' . $key . ') must start with "data-".');
-        }
+        $this->attrs['data-' . $key] = $value;
     }
 
     /**

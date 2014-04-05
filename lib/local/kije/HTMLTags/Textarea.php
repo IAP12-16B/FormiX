@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class Textarea
  * @package kije\HTMLTags
  */
-class Textarea extends Formfield
+class Textarea extends Formfield implements Validateable
 {
     protected $tagname = 'textarea';
     protected $selfclosing = false;
@@ -87,5 +87,30 @@ class Textarea extends Formfield
     public function getValue()
     {
         return $this->getInnerHTML();
+    }
+
+    /**
+     * @param mixed $value
+     *
+     * @return bool|string
+     */
+    public function validateValue($value)
+    {
+        // TODO: Implement validateValue() method.
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegexPattern()
+    {
+        $pattern = '.';
+        if ($this->get('maxlength')) {
+            $pattern .= '{,'.$this->get('maxlength').'}';
+        } else {
+            $pattern .= '*';
+        }
+
+        return $pattern;
     }
 }
