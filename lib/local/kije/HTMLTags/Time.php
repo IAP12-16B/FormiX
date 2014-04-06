@@ -7,19 +7,14 @@ namespace kije\HTMLTags;
 class Time extends InputField implements Validateable
 {
     /**
-     * @param string      $name
-     * @param null|string $min
-     * @param null|string $max
-     * @param bool        $required
-     * @param string      $placeholder
-     * @param string      $value
-     * @param array       $attributes
-     *
+     * @param string $name
+     * @param bool   $required
+     * @param string $placeholder
+     * @param string $value
+     * @param array  $attributes
      */
     public function __construct(
         $name,
-        $min = null,
-        $max = null,
         $required = false,
         $placeholder = '',
         $value = '',
@@ -31,14 +26,6 @@ class Time extends InputField implements Validateable
             'value'       => $value,
             'placeholder' => $placeholder
         );
-
-        if ($min != null) {
-            $attrs['min'] = $min;
-        }
-
-        if ($max != null) {
-            $attrs['max'] = $max;
-        }
 
         if ($required) {
             $attrs['required'] = 'required';
@@ -54,7 +41,11 @@ class Time extends InputField implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        if (!preg_match_all($this->getRegexPattern(), $value)) {
+            return 'Wrong format!';
+        }
+
+        return true;
     }
 
     /**

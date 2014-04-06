@@ -1,4 +1,4 @@
 FormiX
 ======
 
-Formulargenerator for Module 307
+Formgenerator for Module 307

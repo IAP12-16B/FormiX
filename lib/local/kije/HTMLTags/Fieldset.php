@@ -81,7 +81,13 @@ class Fieldset extends Formfield implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        foreach ($this->getFields() as $field) {
+            if ($field->get('value') == $value) {
+                return true;
+            }
+        }
+
+        return 'Invalid value!';
     }
 
     /**

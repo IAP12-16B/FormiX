@@ -45,7 +45,11 @@ class Textfield extends InputField implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        if (!preg_match_all($this->getRegexPattern(), $value)) {
+            return sprintf('Text too long (may only be up to %d characters)!', $this->get('maxlength'));
+        }
+
+        return true;
     }
 
     /**
@@ -53,12 +57,14 @@ class Textfield extends InputField implements Validateable
      */
     public function getRegexPattern()
     {
-        $pattern = '.';
+        $pattern = '/.';
         if ($this->get('maxlength')) {
             $pattern .= '{,'.$this->get('maxlength').'}';
         } else {
             $pattern .= '*';
         }
+
+        $pattern .= '/';
 
         return $pattern;
     }

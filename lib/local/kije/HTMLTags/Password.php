@@ -59,7 +59,17 @@ class Password extends InputField implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        if (!preg_match_all($this->getRegexPattern(), $value)) {
+            if (strlen($value) < $this->minlength) {
+                return 'Too short! Requires min. '.$this->minlength.' characters!';
+            } elseif (strlen($value) > $this->maxlength) {
+                return 'Too long! May only contain up to '.$this->maxlength.' characters!';
+            } else {
+                return 'Format does not match!';
+            }
+        }
+
+        return true;
     }
 
     /**

@@ -121,7 +121,13 @@ class Select extends Formfield implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        foreach ($this->getOptions() as $option) {
+            if ($option->get('value') == $value) {
+                return true;
+            }
+        }
+
+        return 'Invalid value!';
     }
 
     /**

@@ -56,7 +56,11 @@ class Number extends InputField implements Validateable
      */
     public function validateValue($value)
     {
-        // TODO: Implement validateValue() method.
+        if (!preg_match_all($this->getRegexPattern(), $value) && is_numeric($value)) {
+            return 'Only numbers are allowed';
+        }
+
+        return true;
     }
 
     /**
@@ -64,6 +68,6 @@ class Number extends InputField implements Validateable
      */
     public function getRegexPattern()
     {
-        return '[0-9\.]*';
+        return '[0-9\.]*'; // Todo: signed/unsigned
     }
 }
