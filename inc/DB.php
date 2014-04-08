@@ -7,6 +7,7 @@
  */
 class DB
 {
+    // Formats for MySQL dates
     const MYSQL_DATE = 'Y-m-d';
     const MYSQL_DATETIME = 'Y-m-d H:i:s';
 
@@ -20,7 +21,7 @@ class DB
     {
         if (!self::$instance) {
             try {
-                // Initialize PDO intstance.
+                // Initialize PDO intstance, connects to database
                 self::$instance = new \PDO(
                     'mysql:host=' . DB_HOST . ';dbname=' . DB_DATABASE,
                     DB_USER,
@@ -38,29 +39,5 @@ class DB
         }
 
         return self::$instance;
-    }
-
-    /**
-     * Converts a timestamp to MySQL datetime format
-     *
-     * @param $timestamp int
-     *
-     * @return bool|string
-     */
-    public static function unix2datetime($timestamp)
-    {
-        return date(self::MYSQL_DATETIME, $timestamp);
-    }
-
-    /**
-     * Converts a timestamp to MySQL date format
-     *
-     * @param $timestamp int
-     *
-     * @return bool|string
-     */
-    public static function unix2date($timestamp)
-    {
-        return date(self::MYSQL_DATE, $timestamp);
     }
 }

@@ -1,0 +1,29 @@
+<?php /** @var kije\FormiX\View $this */
+
+?>
+
+<?php if ($this->showForm): ?>
+    <form action="<?php echo $this->formAction; ?>" method="<?php echo $this->formMethod; ?>" class="gen_form">
+        <dl>
+            <?php
+                foreach ($this->formfields as $field) {
+                    $caption = $field->getCaption();
+                    if (!empty($caption)) {
+                        echo sprintf(
+                            '<dt><label for="%s">%s:</label></dt>' . PHP_EOL . '<dd>%s</dd>' . PHP_EOL,
+                            $field->get('id'),
+                            $field->getCaption(),
+                            $field->toHTML()
+                        );
+                    } else {
+                        echo sprintf(
+                            '<dt>&nbsp;</dt>' . PHP_EOL . '<dd>%s</dd>' . PHP_EOL,
+                            $field->toHTML()
+                        );
+                    }
+                }
+            ?>
+        </dl>
+    </form>
+<?php endif; ?>
+ 

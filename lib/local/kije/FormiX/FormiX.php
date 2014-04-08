@@ -1,5 +1,6 @@
 <?php
 
+
 namespace kije\FormiX;
 
 use DB;
@@ -17,7 +18,6 @@ use kije\HTMLTags\Select;
 use kije\HTMLTags\Textarea;
 use kije\HTMLTags\Textfield;
 use kije\HTMLTags\Time;
-use kije\HTMLTags\Validateable;
 
 /**
  * Class FormiX
@@ -30,6 +30,10 @@ class FormiX
      * @var Formfield[]
      */
     protected $formfields;
+
+    /**
+     * @var array $structure The Database Structure
+     */
     private $structure;
 
     /**
@@ -52,7 +56,10 @@ class FormiX
         return $this->formfields;
     }
 
-    public function buildForm()
+    /**
+     * Updates the Form
+     */
+    protected function buildForm()
     {
         if (empty($this->structure)) {
             $this->updateStructure();
@@ -60,7 +67,7 @@ class FormiX
 
         $this->formfields = array();
         foreach ($this->structure as $column) {
-            if ($field = $this->column2formfield($column)) {
+            if ($field = $this->getFormfieldFromColumn($column)) {
                 $this->formfields[$column['Field']] = $field;
             }
         }
@@ -69,7 +76,7 @@ class FormiX
     }
 
     /**
-     *
+     *  Updates the structure from DB
      */
     private function updateStructure()
     {
@@ -89,31 +96,26 @@ class FormiX
     }
 
     /**
-     * @param $column
+     * Builds the Formfield object from a DB column (retrieved by SHOW FULL COLUMNS FROM ...)
      *
-     * @return Formfield|null
+     * @param array       $column
+     * @param null|string $value
+     *
+*@return Formfield|null
      */
-    protected function column2formfield($column)
+    protected function getFormfieldFromColumn($column, $value = null)
     {
         // TODO: Rewrite this methode, it's ugly
         $type = $column['Type'];
         $name = $column['Field'];
         $fieldname = sprintf('%s[%s]', $this->tableName, $name);
-        $required = ($column['Null'] == 'YES');
-        $value = $column['Default'];
+        $required = ($column['Null'] != 'YES');
+        $value = ($value ? $value : $column['Default']);
         $caption = $column['Comment'];
-
-        // Fill out values, if they are set in $_REQUEST
-        if (array_key_exists($this->tableName, $_REQUEST)) {
-            if (array_key_exists($name, $_REQUEST[$this->tableName])) {
-                $value = $_REQUEST[$this->tableName][$name];
-            }
-        }
 
         $formfield = null;
 
         if (strpos($name, 'text_') === 0) {
-
             if (preg_match_all('/text/i', $type)) {
                 $formfield = new Textarea($fieldname, $required, $caption, $value);
             } elseif (preg_match_all('/char/i', $type)) {
@@ -121,35 +123,39 @@ class FormiX
                 $formfield = new Textfield($fieldname, $required, $caption, $value, intval($maxlength[1]));
             }
         } elseif (strpos($name, 'checkbox_') === 0) {
-            $formfield = new Checkbox($fieldname, '1', $required);
+            $formfield = new Checkbox($fieldname, '1', $required, !empty($value));
         } elseif (strpos($name, 'password_') === 0) {
             $formfield = new Password($fieldname, $required, $caption, $value);
         } elseif (strpos($name, 'date_') === 0) {
-            $formfield = new Date($fieldname, date('Y-m-d'), null, $required, $caption, $value);
+            $formfield = new Date($fieldname, null, null, $required, $value);
         } elseif (strpos($name, 'time_') === 0) {
-            $formfield = new Time($fieldname, $required, $caption, $value);
+            $formfield = new Time($fieldname, $required, $value);
         } elseif (strpos($name, 'datetime_') === 0) {
-            $formfield = new Datetime($fieldname, date('c'), null, $required, $caption, $value);
+            $formfield = new Datetime($fieldname, date('c'), null, $required, $value);
         } elseif (strpos($name, 'number_') === 0) {
             if (preg_match_all('/int/i', $type)) { // Todo: Types?
                 $formfield = new Number($fieldname, 1, $required, $caption, $value);
-            } elseif (preg_match_all('/double|float|real/i', $type)) {
+            } elseif (preg_match_all('/double|float|real|numeric/i', $type)) {
                 $formfield = new Number($fieldname, 'any', $required, $caption, $value);
             }
-        } elseif (preg_match_all('/enum/i', $type)) {
-            $values = array_filter(preg_split('/enum\(|\"|\'|[\s,]+|\)/i', $column['Type']));
-            if (strpos($name, 'radio_') === 0 && strpos(strtolower($type), 'enum') !== false) {
+        } elseif (preg_match_all('/enum|set/i', $type)) {
+            $values = $this->getEnumValues($column['Type']);
+            if (strpos($name, 'radio_') === 0) {
                 $formfield = new Fieldset();
                 foreach ($values as $val) {
                     $radio = new Radio($fieldname, $val, $required, $val == $value);
                     $radio->setCaption($val);
                     $formfield->addField($radio);
                 }
-            } elseif (strpos($name, 'select_') === 0 && strpos(strtolower($type), 'enum') !== false) {
+            } elseif (strpos($name, 'select_') === 0) {
                 $formfield = new Select($fieldname, $required);
+
+                // First Option is empty
+                $formfield->addOption(new Option(' ', ''));
+
                 foreach ($values as $val) {
                     $formfield->addOption(
-                        new Option($val, $value)
+                        new Option($val, $value, $value == $val)
                     );
                 }
             }
@@ -164,45 +170,14 @@ class FormiX
     }
 
     /**
-     * @param array $formRequest Array with the values of the submitted form
+     * Extracts the values from an enum/set
+     *
+     * @param $sqlEnum
      *
      * @return array
      */
-    public function validate($formRequest)
+    protected function getEnumValues($sqlEnum)
     {
-        $messages = array();
-        $errors = array();
-
-        $this->buildForm();
-
-        // filter empty fields
-        $formRequest = array_filter(array_map('trim', $formRequest));
-
-        foreach ($this->formfields as $key => $formfield) {
-            if (
-                !array_key_exists($key, $formRequest) &&
-                $formfield->get('required')
-            ) {
-                $errors[] = sprintf('Field %s must not be empty!', $formfield->getCaption());
-            } else {
-                $value = $formRequest[$key];
-                if ($formfield instanceof Validateable) {
-                    $result = $formfield->validateValue($value);
-                    if ($result) {
-                        $errors[] = $result;
-                    }
-                }
-            }
-
-        }
-
-        if (empty($errors)) {
-            $messages[] = 'Everything alright! Thank you!';
-        }
-
-        return array(
-            'messages' => $messages,
-            'errors'   => $errors
-        );
+        return array_filter(preg_split('/(enum|set)\(|\"|\'|(\s?,\s?)+|\)/i', $sqlEnum));
     }
 }

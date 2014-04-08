@@ -3,7 +3,10 @@
 
 namespace kije\HTMLTags;
 
-
+/**
+ * Class Formfield
+ * @package kije\HTMLTags
+ */
 class Formfield extends HTMLTag
 {
     protected $caption;
@@ -22,5 +25,8 @@ class Formfield extends HTMLTag
     public function setCaption($caption)
     {
         $this->caption = $caption;
+        if ($this->isAttributeAllowed('title')) {
+            $this->set('title', $this->caption);
+        }
     }
 }

@@ -3,33 +3,32 @@
 
 namespace kije\HTMLTags;
 
-
-class Date extends InputField implements Validateable
+/**
+ * Class Date
+ * @package kije\HTMLTags
+ */
+class Date extends InputField
 {
     /**
      * @param string      $name
-     * @param null|string $min
+     * @param null|ing    $min
      * @param null|string $max
      * @param bool        $required
-     * @param string      $placeholder
      * @param string      $value
      * @param array       $attributes
-     *
      */
     public function __construct(
         $name,
         $min = null,
         $max = null,
         $required = false,
-        $placeholder = '',
         $value = '',
         array $attributes = array()
     ) {
         $attrs = array(
             'name'        => $name,
             'type'        => 'date',
-            'value'       => $value,
-            'placeholder' => $placeholder
+            'value' => $value
         );
 
         if ($min != null) {
@@ -45,23 +44,5 @@ class Date extends InputField implements Validateable
         }
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        // TODO: Implement validateValue() method.
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        return '/(?:19|20)[0-9]{2}-(?:(?:0[1-9]|1[0-2])-(?:0[1-9]|1[0-9]|2[0-9])|(?:(?!02)(?:0[1-9]|1[0-2])-(?:30))|(?:(?:0[13578]|1[02])-31))/';
     }
 } 

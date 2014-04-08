@@ -7,16 +7,19 @@ namespace kije\HTMLTags;
  * Class Select
  * @package kije\HTMLTags
  */
-class Select extends Formfield implements Validateable
+class Select extends Formfield
 {
     protected $tagname = 'select';
     protected $selfclosing = false;
     protected $requiredAttributes = array('name');
 
+    /**
+     * @var Option[]
+     */
     private $options = array();
 
     /**
-     * @param array    $name
+     * @param string $name
      * @param bool     $required
      * @param Option[] $options
      * @param array    $attributes
@@ -28,7 +31,7 @@ class Select extends Formfield implements Validateable
         array $options = array(),
         array $attributes = array()
     )
-    {// TODO: selected
+    {
         $attrs = array(
             'name' => $name,
         );
@@ -43,7 +46,7 @@ class Select extends Formfield implements Validateable
     }
 
     /**
-     * @param array $options
+     * @param Option[] $options
      */
     public function addOptions(array $options)
     {
@@ -65,9 +68,6 @@ class Select extends Formfield implements Validateable
         }
     }
 
-    /**
-     * @return array
-     */
     public function getAllowedAttributes()
     {
         return array_unique(
@@ -94,9 +94,7 @@ class Select extends Formfield implements Validateable
         unset($this->options[$key]);
     }
 
-    /**
-     *
-     */
+
     protected function updateInnerHTML()
     {
         $this->innerHTML = '';
@@ -112,29 +110,5 @@ class Select extends Formfield implements Validateable
     public function getOptions()
     {
         return $this->options;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        foreach ($this->getOptions() as $option) {
-            if ($option->get('value') == $value) {
-                return true;
-            }
-        }
-
-        return 'Invalid value!';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        return '.*';
     }
 }

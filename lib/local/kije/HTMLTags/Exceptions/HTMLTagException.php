@@ -5,7 +5,7 @@ namespace kije\HTMLTags\Exceptions;
 
 
 /**
- * Class HTMLTagException
+ * Exception for HTMLTag
  * @package kije\HTMLTags\Exceptions
  */
 class HTMLTagException extends \Exception

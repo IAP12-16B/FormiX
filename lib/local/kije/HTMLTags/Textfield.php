@@ -5,7 +5,7 @@ namespace kije\HTMLTags;
  * Class Textfield
  * @package kije\HTMLTags
  */
-class Textfield extends InputField implements Validateable
+class Textfield extends InputField
 {
     /**
      * @param array    $name
@@ -27,45 +27,18 @@ class Textfield extends InputField implements Validateable
             'name'        => $name,
             'type'        => 'text',
             'value'       => $value,
-            'placeholder' => $placeholder,
-            'maxlength'   => $maxlength
+            'placeholder' => $placeholder
         );
 
         if ($required) {
             $attrs['required'] = 'required';
         }
+
+        if ($maxlength) {
+            $attrs['maxlength'] = $maxlength;
+        }
+
         $attrs = array_merge($attributes, $attrs);
         parent::__construct($attrs);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        if (!preg_match_all($this->getRegexPattern(), $value)) {
-            return sprintf('Text too long (may only be up to %d characters)!', $this->get('maxlength'));
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        $pattern = '/.';
-        if ($this->get('maxlength')) {
-            $pattern .= '{,'.$this->get('maxlength').'}';
-        } else {
-            $pattern .= '*';
-        }
-
-        $pattern .= '/';
-
-        return $pattern;
     }
 }

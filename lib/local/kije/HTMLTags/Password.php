@@ -6,10 +6,21 @@ namespace kije\HTMLTags;
  * Class Password
  * @package kije\HTMLTags
  */
-class Password extends InputField implements Validateable
+class Password extends InputField
 {
+    /**
+     * @var string $allowedCharacters a Regex-Pattern matching the allowed characters. Example: [a-Z0-9]
+     */
     protected $allowedCharacters;
+
+    /**
+     * @var int $minlength the minimum length of the password
+     */
     protected $minlength;
+
+    /**
+     * @var int $maxlength the maximum length of the password
+     */
     protected $maxlength;
 
     /**
@@ -19,7 +30,7 @@ class Password extends InputField implements Validateable
      * @param string $value
      * @param string $allowedCharacters
      * @param int    $minlength
-     * @param null   $maxlength
+     * @param int    $maxlength
      * @param array  $attributes
      */
     public function __construct(
@@ -36,47 +47,17 @@ class Password extends InputField implements Validateable
             'name'        => $name,
             'type'        => 'password',
             'value'       => $value,
-            'placeholder' => $placeholder,
-
+            'placeholder' => $placeholder
         );
 
         if ($required) {
             $attrs['required'] = 'required';
         }
 
+        $this->minlength = $minlength;
         $this->maxlength = $maxlength;
-        $this->minlength = $maxlength;
         $this->allowedCharacters = $allowedCharacters;
 
-        $attrs = array_merge($attributes, $attrs);
-        parent::__construct($attrs);
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        if (!preg_match_all($this->getRegexPattern(), $value)) {
-            if (strlen($value) < $this->minlength) {
-                return 'Too short! Requires min. '.$this->minlength.' characters!';
-            } elseif (strlen($value) > $this->maxlength) {
-                return 'Too long! May only contain up to '.$this->maxlength.' characters!';
-            } else {
-                return 'Format does not match!';
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
         $pattern = '('.$this->allowedCharacters.')';
         if ($this->minlength && $this->maxlength) {
             $pattern .= '{'.$this->minlength.','.$this->maxlength.'}';
@@ -88,6 +69,9 @@ class Password extends InputField implements Validateable
             $pattern = '*';
         }
 
-        return $pattern;
+        $attrs['pattern'] = $pattern;
+
+        $attrs = array_merge($attributes, $attrs);
+        parent::__construct($attrs);
     }
 }

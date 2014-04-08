@@ -4,7 +4,7 @@ namespace kije\HTMLTags;
 
 
 /**
- * Class Button
+ * Button-Tag class
  * @package kije\HTMLTags
  */
 class Button extends Formfield
@@ -14,10 +14,11 @@ class Button extends Formfield
     protected $requiredAttributes = array();
 
     /**
-     * @param null|string $name
-     * @param string|null $value
-     * @param string      $type
-     * @param array       $attributes
+     * @param string        $text
+     * @param null|string   $name
+     * @param string|null   $value
+     * @param string        $type
+     * @param array         $attributes
      */
     public function __construct($text, $name = null, $value = null, $type = 'submit', array $attributes = array())
     {
@@ -33,6 +34,13 @@ class Button extends Formfield
         $this->setText($text);
     }
 
+    /**
+     * @param $text
+     */
+    public function setText($text)
+    {
+        $this->setInnerHTML($text);
+    }
 
     /**
      * @return array
@@ -57,13 +65,5 @@ class Button extends Formfield
                 )
             )
         );
-    }
-
-    /**
-     * @param $text
-     */
-    public function setText($text)
-    {
-        $this->setInnerHTML($text);
     }
 }

@@ -15,16 +15,21 @@ class Option extends Formfield
     protected $requiredAttributes = array();
 
     /**
-     * @param array $caption
+     * @param string $caption
      * @param null  $value
+     * @param bool   $selected
      * @param array $attributes
      */
-    public function __construct($caption, $value = null, array $attributes = array())
+    public function __construct($caption, $value = null, $selected = false, array $attributes = array())
     {
         $attrs = array();
 
-        if ($value != null) {
+        if ($value !== null) {
             $attrs['value'] = $value;
+        }
+
+        if ($selected) {
+            $attrs['selected'] = 'selected';
         }
 
         $attrs = array_merge($attributes, $attrs);
@@ -32,9 +37,7 @@ class Option extends Formfield
         $this->innerHTML = $caption;
     }
 
-    /**
-     * @return array
-     */
+
     public function getAllowedAttributes()
     {
         return array_unique(
@@ -51,7 +54,8 @@ class Option extends Formfield
     }
 
     /**
-     * @param $text
+     * Sets the Text of the option
+     * @param string $text
      */
     public function setText($text)
     {
@@ -59,7 +63,7 @@ class Option extends Formfield
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getText()
     {

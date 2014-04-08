@@ -3,13 +3,16 @@
 
 namespace kije\HTMLTags;
 
-
+/**
+ * Class Radio
+ * @package kije\HTMLTags
+ */
 class Radio extends InputField
 {
 
     /**
      * @param string $name
-     * @param       $value
+     * @param mixed  $value
      * @param bool  $required
      * @param bool  $checked
      * @param array $attributes

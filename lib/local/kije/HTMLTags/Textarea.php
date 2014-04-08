@@ -7,7 +7,7 @@ namespace kije\HTMLTags;
  * Class Textarea
  * @package kije\HTMLTags
  */
-class Textarea extends Formfield implements Validateable
+class Textarea extends Formfield
 {
     protected $tagname = 'textarea';
     protected $selfclosing = false;
@@ -15,10 +15,10 @@ class Textarea extends Formfield implements Validateable
 
     /**
      * @param array  $name
-     * @param        $required
+     * @param bool   $required
      * @param string $placeholder
      * @param string $value
-     * @param null   $maxlength
+     * @param int $maxlength
      * @param array  $attributes
      */
     public function __construct(
@@ -31,21 +31,22 @@ class Textarea extends Formfield implements Validateable
     ) {
         $attrs = array(
             'name'        => $name,
-            'placeholder' => $placeholder,
-            'maxlength'   => $maxlength
+            'placeholder' => $placeholder
         );
 
         if ($required) {
             $attrs['required'] = 'required';
         }
+
+        if ($maxlength) {
+            $attrs['maxlength'] = $maxlength;
+        }
+
         $attrs = array_merge($attributes, $attrs);
         $this->setAttributes($attrs);
         $this->innerHTML = $value;
     }
 
-    /**
-     * @return array
-     */
     public function getAllowedAttributes()
     {
         return array_unique(
@@ -74,7 +75,7 @@ class Textarea extends Formfield implements Validateable
 
 
     /**
-     * @param $value
+     * @param string $value
      */
     public function setValue($value)
     {
@@ -82,41 +83,10 @@ class Textarea extends Formfield implements Validateable
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getValue()
     {
         return $this->getInnerHTML();
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        if (!preg_match_all($this->getRegexPattern(), $value)) {
-            return sprintf('Text too long (may only be up to %d characters)!', $this->get('maxlength'));
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        $pattern = '/.';
-        if ($this->get('maxlength')) {
-            $pattern .= '{,'.$this->get('maxlength').'}';
-        } else {
-            $pattern .= '*';
-        }
-
-        $pattern .= '/';
-
-        return $pattern;
     }
 }

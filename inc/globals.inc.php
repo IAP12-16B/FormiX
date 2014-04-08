@@ -5,7 +5,7 @@ if (!defined('DEBUG')) {
     define('DEBUG', true);
 }
 
-// Define paths
+// Define absolute Paths (these are relative to this document)
 define('INC_ROOT', __DIR__);
 define('DOC_ROOT', realpath(INC_ROOT . '/..'));
 

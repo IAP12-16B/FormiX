@@ -4,7 +4,7 @@
 namespace kije\HTMLTags;
 
 
-class Number extends InputField implements Validateable
+class Number extends InputField
 {
     /**
      * @param string     $name
@@ -49,25 +49,4 @@ class Number extends InputField implements Validateable
         parent::__construct($attrs);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        if (!preg_match_all($this->getRegexPattern(), $value) && is_numeric($value)) {
-            return 'Only numbers are allowed';
-        }
-
-        return true;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        return '[0-9\.]*'; // Todo: signed/unsigned
-    }
 }

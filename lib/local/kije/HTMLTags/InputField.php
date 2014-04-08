@@ -4,18 +4,15 @@ namespace kije\HTMLTags;
 
 
 /**
- * Class InputField
+ * Base class for all <input ... /> Tags
  * @package kije\HTMLTags
  */
-class InputField extends Formfield implements Validateable
+class InputField extends Formfield
 {
     protected $tagname = 'input';
     protected $selfclosing = true;
     protected $requiredAttributes = array('name', 'type');
 
-    /**
-     * @return array
-     */
     public function getAllowedAttributes()
     {
         return array_unique(
@@ -58,27 +55,20 @@ class InputField extends Formfield implements Validateable
         );
     }
 
-    /**
-     * @param $key
-     * @param $value
-     *
-     * @return bool
-     */
-    public function isValueValidForAttribute($key, $value)
+    public function isValueValidForAttribute($attribute, $value)
     {
-        $res = parent::isValueValidForAttribute($key, $value);
-        switch ($key) {
+        $res = parent::isValueValidForAttribute($attribute, $value);
+        switch ($attribute) {
             case 'type':
                 $res = $res && in_array($value, $this->getAllowedTypes());
                 break;
-
-            // TODO: implement other checks -> https://developer.mozilla.org/en-US/docs/Web/HTML/Element/Input
         }
 
         return $res;
     }
 
     /**
+     * Get all allowed types
      * @return array
      */
     public function getAllowedTypes()
@@ -108,23 +98,5 @@ class InputField extends Formfield implements Validateable
             'url',
             'week'
         );
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        // TODO: Implement validateValue() method.
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        return '.*';
     }
 }

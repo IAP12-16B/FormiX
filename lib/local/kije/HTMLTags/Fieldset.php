@@ -3,15 +3,18 @@
 
 namespace kije\HTMLTags;
 
-
-class Fieldset extends Formfield implements Validateable
+/**
+ * Class Fieldset
+ * @package kije\HTMLTags
+ */
+class Fieldset extends Formfield
 {
     protected $tagname = 'fieldset';
     protected $selfclosing = false;
     protected $requiredAttributes = array();
 
     /**
-     * @inc Formfield[] $fields
+     * @var Formfield[] $fields
      */
     protected $fields = array();
 
@@ -34,6 +37,7 @@ class Fieldset extends Formfield implements Validateable
     }
 
     /**
+     * Add a Formfield to this fieldset
      * @param Formfield  $field
      * @param int|string $key
      */
@@ -47,6 +51,7 @@ class Fieldset extends Formfield implements Validateable
     }
 
     /**
+     * Remove a formfield
      * @param $key
      */
     public function removeField($key)
@@ -54,9 +59,6 @@ class Fieldset extends Formfield implements Validateable
         unset($this->fields[$key]);
     }
 
-    /**
-     *
-     */
     protected function updateInnerHTML()
     {
         $this->innerHTML = '';
@@ -72,29 +74,5 @@ class Fieldset extends Formfield implements Validateable
     public function getFields()
     {
         return $this->fields;
-    }
-
-    /**
-     * @param mixed $value
-     *
-     * @return bool|string
-     */
-    public function validateValue($value)
-    {
-        foreach ($this->getFields() as $field) {
-            if ($field->get('value') == $value) {
-                return true;
-            }
-        }
-
-        return 'Invalid value!';
-    }
-
-    /**
-     * @return string
-     */
-    public function getRegexPattern()
-    {
-        return '.*';
     }
 }
