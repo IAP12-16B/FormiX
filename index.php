@@ -67,27 +67,11 @@ require_once 'inc/globals.inc.php';
     <body>
         <section class="test_form">
             <h1>Test</h1>
-            <?php
-
-            // initialize Formgenerator
-            $form1 = new FormiX('test_form2');
-
-            // initialize View
-            $formView1 = new kije\FormiX\View(DOC_ROOT.'/TestFormView.phtml',$form1->getFormfields(),'', 'post');
-            echo $formView1->render();
-            ?>
+            <?php echo FormiX::run('test_form2', DOC_ROOT.'/TestFormView.phtml'); ?>
         </section>
         <section class="test_form">
             <h1>Echtes Formular</h1>
-            <?php
-
-            // initialize Formgenerator
-            $form2 = new FormiX('real_form');
-
-            // initialize View
-            $formView2 = new kije\FormiX\View(DOC_ROOT.'/TestFormView.phtml',$form2->getFormfields(),'', 'post');
-            echo $formView2->render();
-            ?>
+            <?php echo FormiX::run('real_form', DOC_ROOT.'/TestFormView.phtml'); ?>
         </section>
 
     </body>

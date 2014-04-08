@@ -45,6 +45,26 @@ class FormiX
     }
 
     /**
+     * Static methode, which returns the rendered HTML of a Form
+     *
+     * @param string $tableName
+     * @param string $template
+     * @param string $action
+     * @param string $method
+     *
+     * @return string
+     */
+    public static function run($tableName, $template, $action = '', $method = 'post')
+    {
+        // initialize Formgenerator
+        $formix = new self($tableName);
+
+        // initialize View
+        $formView1 = new View($template, $formix->getFormfields(), $action, $method);
+        return $formView1->render();
+    }
+
+    /**
      * @return Formfield[]
      */
     public function getFormfields()
@@ -101,7 +121,7 @@ class FormiX
      * @param array       $column
      * @param null|string $value
      *
-*@return Formfield|null
+     * @return Formfield|null
      */
     protected function getFormfieldFromColumn($column, $value = null)
     {
