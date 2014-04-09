@@ -10,18 +10,36 @@ require_once 'inc/globals.inc.php';
         <title>Test-Form</title>
 
         <style>
-            :invalid {
+            :not(button):not(form):invalid {
                 background-color: orange;
                 border: 1px solid beige;
                 box-shadow: 0 0 5px red;
                 color: #000;
             }
 
-            :not(button):valid {
+            :not(button):not(form):valid {
                 background-color: greenyellow;
                 box-shadow: 0 0 5px greenyellow;
                 border: 1px solid green;
                 color: #000;
+            }
+
+            form:invalid {
+                border: 1px solid beige;
+                box-shadow: 0 0 5px red;
+                background-color: azure;
+            }
+
+            form:valid {
+                border: 1px solid green;
+                box-shadow: 0 0 5px greenyellow;
+                background-color: azure;
+            }
+
+            body,html {
+                background-color: #fff;
+                font-size: 14px;
+                font-family: sans-serif;
             }
 
             ::-webkit-input-placeholder {
@@ -61,6 +79,10 @@ require_once 'inc/globals.inc.php';
             .test_form dl dt,
             .test_form dl dd {
                 padding-bottom: 5px;
+            }
+
+            .clear {
+                clear: both;
             }
         </style>
     </head>

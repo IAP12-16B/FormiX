@@ -61,7 +61,7 @@ class Fieldset extends Formfield
 
     protected function updateInnerHTML()
     {
-        $this->innerHTML = '';
+        $this->innerHTML = '<legend>'.$this->getCaption().'</legend>';
 
         foreach ($this->getFields() as $field) {
             $this->innerHTML .= sprintf('<label>%s %s</label>', $field->toHTML(), $field->getCaption());
