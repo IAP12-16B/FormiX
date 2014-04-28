@@ -1,0 +1,327 @@
+\RequirePackage[l2tabu, orthodox]{nag}
+\documentclass[11pt,a4paper,titlepage,portrait,ngerman]{scrartcl}
+\pdfgentounicode=1
+\pdfcompresslevel=9
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+%% INFO SECTION %%
+\def \docTitle{FormiX}
+\def \docSubtitle{Modul 307}
+\def \docAuthor{Kim Jeker}
+\def \docDate{\today}
+\def \docNegtive{0}
+
+%% PACKAGES
+\usepackage[osf]{mathpazo} % Font
+\usepackage[pdftex,
+	plainpages=true,
+	breaklinks=true,
+	colorlinks=false,
+	linktoc=all,
+	linkcolor=blue,
+	unicode=true,
+	pdfborder={0 0 0},
+	pdftitle=\docTitle,
+	pdfauthor=\docAuthor 
+]{hyperref}
+\usepackage[pdftex]{graphicx}
+\usepackage{hfoldsty}
+\usepackage{thumbpdf}
+\usepackage{amsmath}
+\usepackage[ngerman]{babel}
+\usepackage{siunitx}
+\usepackage{cleveref}
+\usepackage{fancyhdr}
+\usepackage[a4paper]{geometry}
+\usepackage[
+	letterspace=170,
+	babel=true,
+	tracking=true,
+	kerning=true,
+	protrusion=true,
+	expansion
+]{microtype}
+\usepackage{fixltx2e}
+\usepackage{currfile}
+\usepackage{caption}
+\usepackage{xcolor}
+\usepackage{lastpage}
+\usepackage{ellipsis}
+\usepackage{bigfoot}
+\usepackage{listings}  
+
+\lstset{language=SQL}   
+
+\lstdefinestyle{customc}{
+  belowcaptionskip=1\baselineskip,
+  breaklines=treu,
+  frame=none,
+  xleftmargin=0pt,
+  language=SQL,
+  showstringspaces=false,
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+}
+
+
+
+\lstset{escapechar=@,style=customc}
+
+
+\setkomafont{disposition}{\normalfont}
+\setkomafont{title}{\normalfont\bfseries\scshape\Huge}
+\setkomafont{subtitle}{\normalfont\scshape\bfseries\normalsize}
+\setkomafont{dictumauthor}{\normalfont\bfseries\small}
+\setkomafont{section}{\normalfont\bfseries\scshape\Large}
+\setkomafont{subsection}{\normalfont\bfseries\scshape\large}
+\setkomafont{subsubsection}{\normalfont\bfseries\normalsize}
+\setkomafont{descriptionlabel}{\normalfont\bfseries\small}
+
+
+
+
+\ifnum\docNegtive=1
+	\pagecolor{black}
+	\color{white}
+\fi
+
+
+% DOC INFO 
+\title{\docTitle}
+\subtitle{\docSubtitle}
+\author{\large\scshape\docAuthor}
+\date{\normalsize\scshape\docDate}
+
+%% HEADER & FOOTER
+\pagestyle{fancy}
+\lhead{\docTitle}
+\chead{\leftmark}
+\rhead{\docSubtitle}
+\lfoot{\currfilename}
+\cfoot{\docAuthor}
+\rfoot{Seite \thepage\ von \pageref*{LastPage} }
+
+
+% Make German ;)
+\renewcommand{\figurename}{Abbildung}
+
+\begin{document}
+
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+\section{Kurzanleitung}
+\begin{enumerate}
+	\item{
+		\textbf{Datenbank und Tabelle erstellen} \\
+		Zuerst muss eine Datenbank und eine Tabelle erstell werden. Den Aufbau der MySQL-Tabelle entnehmen Sie bitte dem Blackbox-Testplan. \\
+		Folgender Code erzeugt eine Tabelle, die alle Funktionen des Formulargenerators testet: \par
+		\small{\begin{lstlisting} 
+CREATE TABLE Formulargenerator.test_form2 (
+    id INT AUTO_INCREMENT,
+    text_normaltextinput VARCHAR(100) COMMENT "Normal Text",
+    text_requiredtextinput VARCHAR(100) NOT NULL COMMENT "Required Text",
+    text_defaultvaluetextinput VARCHAR(100) DEFAULT "Test" COMMENT "Default value Text",
+    text_shorttextinput VARCHAR(5) COMMENT "Short Text",
+    text_fulltext TEXT COMMENT "Text",
+    text_requiredfulltext TEXT NOT NULL COMMENT "Required Text",
+    checkbox_checkbox TINYINT(1) COMMENT "Checkbox",
+    checkbox_requiredcheckbox TINYINT(1) NOT NULL COMMENT "Required Checkbox",
+    checkbox_checked_checkbox TINYINT(1) DEFAULT 1 COMMENT "Checked Checkbox",
+    password_password VARCHAR(100) COMMENT "Password",
+    password_requiredpassword VARCHAR(100) NOT NULL COMMENT "Required Password",
+    date_date DATE COMMENT "Date",
+    date_requireddate DATE NOT NULL COMMENT "Required Date",
+    date_defaultvaluedate DATE DEFAULT "2014-04-9" COMMENT "Default value Date",
+    time_time TIME COMMENT "Time",
+    time_requiredtime TIME NOT NULL COMMENT "Required Time",
+    time_defaultvaluetime TIME DEFAULT "12:00:00" COMMENT "Default value Time",
+    datetime_datetime DATETIME COMMENT "Datetime",
+    datetime_requireddatetime DATETIME NOT NULL COMMENT "Required Datetime",
+    datetime_defaultvaluedatetime DATETIME DEFAULT "2014-04-9 12:00:00" COMMENT "Default value Datetime",
+    number_number INT COMMENT "Number",
+    number_requirednumber INT NOT NULL COMMENT "Required Number",
+    number_defaultvaluenumber INT DEFAULT 66 COMMENT "Default value Number",
+    number_floatnumber DOUBLE COMMENT "Float Number",
+    number_requiredfloatnumber DOUBLE  NOT NULL COMMENT "Required Float Number",
+    number_defaultvaluefloatnumber DOUBLE DEFAULT 3.1415 COMMENT "Default value Float Number",
+    radio_radio ENUM('R', 'A', 'D', 'I', 'O') COMMENT "Radio",
+    radio_requiredradio ENUM('Test', 'Example', 'Table', 'DB') NOT NULL COMMENT "Required Radio",
+    radio_defaultvalueradio ENUM('Test', 'Example', 'Table', 'DB') DEFAULT "Table" COMMENT "Default value Radio",
+    select_select ENUM('R', 'A', 'D', 'I', 'O') COMMENT "Select",
+    select_requiredselect ENUM('Test', 'Example', 'Table', 'DB') NOT NULL COMMENT "Required Select",
+    select_defaultvalueselect ENUM('Test', 'Example', 'Table', 'DB') DEFAULT "Table" COMMENT "Default value Select",
+
+    undefined_undefined INT COMMENT "This should not be shown!",
+
+    PRIMARY KEY (id)
+);
+		\end{lstlisting}  }
+		
+	} 
+	\item{\textbf{Formulargenerator verwenden} \\
+		Nun muss der Formulargenerator eingebunden werden. Dazu includiert man alle Dateien aus den Verzeichnissen $lib/local/kije/FormiX$ und $lib/local/kije/HTMLTags$. Danach kann man folgenden Code verwenden, um das Formular zu erstellen:
+		\par
+		\small{\begin{lstlisting}[language=PHP] 
+echo FormiX::run('test_form2', DOC_ROOT.'/TestFormView.phtml');
+		\end{lstlisting}  }
+	 \par
+	Wobei «test\_form2» der Name der Datenbanktabelle ist, und «TestFormView.phtml» der Pfad zum Formular-Template ist.}
+	
+	\item{\textbf{Formular generieren} \\
+		Nun ist der Formulargenerator eigentlich schon Einsatzbereit. Man muss nur noch die vorhin erstellte Date in einem Browser öffnen (natürlich über einen Webserver wie XAMPP, etc...), und schon wird das Formular generiert.	
+		}
+\end{enumerate}
+
+\newpage
+\section{Balckbox-Testplan}
+
+\subsection{Input-Types}
+\small{
+\begin{tabular}{|p{2cm}|l|p{5.2cm}|}
+		\hline
+		{\textbf{Typ}} 
+		& 
+		{\textbf{SQL Column Definition}}
+		& 
+		{\textbf{Beschreibung}}  \\
+	\hline
+		{Textfield} 
+		& 
+		\begin{lstlisting} 
+text_name VARCHAR(50)
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Text-Input-Feld mit maxlength=50}  \\
+	\hline 
+		{Textarea} 
+		& 
+		\begin{lstlisting} 
+text_name TEXT
+		\end{lstlisting} 
+		& 
+		{Erzeugt eine Textarea}  \\
+	\hline
+		{Checkbox} 
+		& 
+		\begin{lstlisting} 
+checkbox_tos TINYINT(1)
+		\end{lstlisting} 
+		& 
+		{Erzeugt eine Checkbox}  \\
+	\hline
+		{Passwort} 
+		& 
+		\begin{lstlisting} 
+password_pwd VARCHAR(70)
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Passwort-Feld}  \\
+	\hline
+		{Datum} 
+		& 
+		\begin{lstlisting} 
+date_datum DATE
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Datums-Eingabefeld}  \\
+	\hline
+		{Zeit} 
+		& 
+		\begin{lstlisting} 
+time_zeit TIME
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Zeit-Eingabefeld}  \\
+	\hline
+		{Datetime} 
+		& 
+		\begin{lstlisting} 
+datetime_termin DATETIME
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Datums- und Zeit-Eingabefeld}  \\
+	\hline
+		{Zahl} 
+		& 
+		\begin{lstlisting} 
+number_anzahl INT
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Ganzzahlen-Eingabefeld}  \\
+	\hline
+		{Zahl} 
+		& 
+		\begin{lstlisting} 
+number_anzahl FLOAT
+		\end{lstlisting} 
+		& 
+		{Erzeugt ein Fliesskommazahlen-Eingabefeld}  \\
+	\hline
+		{Radio-Button} 
+		& 
+		\begin{lstlisting} 
+radio_anrede 
+ENUM('Herr', 'Frau', 'Anderes')
+		\end{lstlisting} 
+		& 
+		{Erzeugt 3 Radio-Buttons mit den Werten Herr, Frau und Anderes}  \\
+	\hline
+	{Selectbox} 
+		& 
+		\begin{lstlisting} 
+select_anrede 
+ENUM('Herr', 'Frau', 'Anderes')
+		\end{lstlisting} 
+		& 
+		{Erzeugt eine Selectbox  mit den 3 Optionen Herr, Frau und Anderes $+$ einer leeren Option}  \\
+	\hline
+\end{tabular}
+
+
+\subsection{Optionen}
+\begin{tabular}{|p{2cm}|l|p{5.2cm}|} 
+	\hline
+		{\textbf{Option}} 
+		& 
+		{\textbf{SQL Column Definition}}
+		& 
+		{\textbf{Beschreibung}}  \\
+	\hline
+	{Pflichtfeld} 
+		& 
+		\begin{lstlisting} 
+number_anzahl INT NOT NULL
+		\end{lstlisting} 
+		& 
+		{NOT NULL bewirkt, dass das Eingabefeld zu einem Pflichtfeld wird.}  \\
+	\hline
+	{Standart-Wert} 
+		& 
+		\begin{lstlisting} 
+select_anrede 
+ENUM('Herr', 'Frau', 'Anderes')
+DEFAULT 'Herr'
+		\end{lstlisting} 
+		& 
+		{DEFAULT <value>  bewirkt, dass das Eingabefeld stanartmässig den Wert <value> hat (in diesem Fall in der Checkbox der entsprechende Eintrag ausgewählt ist).}  \\
+	\hline
+	{Feld-Beschreibung} 
+		& 
+		\begin{lstlisting} 
+datetime_termin DATETIME 
+COMMENT "Termin"
+		\end{lstlisting} 
+		& 
+		{Der Kommentar zu einem Feld wird als Beschreibungstext (placeholder-Attribute bzw. Label-Text) verwendet.}  \\
+	\hline
+\end{tabular}
+} 
+ 
+\end{document}
